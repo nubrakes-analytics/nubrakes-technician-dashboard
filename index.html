@@ -617,544 +617,82 @@
 </div>
 
 <script>
-const RAW = {
-  "months": [
-    ["2026-03", "March 2026"],
-    ["2026-02", "February 2026"],
-    ["2026-01", "January 2026"],
-    ["2025-12", "December 2025"],
-    ["2025-11", "November 2025"],
-    ["2025-10", "October 2025"],
-    ["2025-09", "September 2025"],
-    ["2025-08", "August 2025"],
-    ["2025-07", "July 2025"],
-    ["2025-06", "June 2025"],
-    ["2025-05", "May 2025"],
-    ["2025-04", "April 2025"],
-    ["2025-03", "March 2025"],
-    ["2025-02", "February 2025"],
-    ["2025-01", "January 2025"],
-    ["2024-12", "December 2024"],
-    ["2024-11", "November 2024"],
-    ["2024-10", "October 2024"],
-    ["2024-09", "September 2024"],
-    ["2024-08", "August 2024"],
-    ["2024-07", "July 2024"],
-    ["2024-06", "June 2024"],
-    ["2024-05", "May 2024"],
-    ["2024-04", "April 2024"],
-    ["2024-03", "March 2024"]
-  ],
-  "markets": [
-    "Atlanta",
-    "Austin",
-    "Dallas",
-    "Houston",
-    "Jacksonville",
-    "Miami",
-    "Nashville",
-    "Orlando",
-    "San Antonio",
-    "Tampa"
-  ],
-  "records": [
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Dallas",
-      "name": "Dustin Morgan",
-      "isactive": true,
-      "total_revenue": 10442.37,
-      "avg_ticket": 497.26,
-      "jobs_per_day": 3.0,
-      "aov_completion_rate": null,
-      "repairs_per_job": 2.24,
-      "cancel_rate": 22.6,
-      "completed_jobs": 21,
-      "days_worked": 7.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Nashville",
-      "name": "Mike Nethken",
-      "isactive": true,
-      "total_revenue": 10338.46,
-      "avg_ticket": 544.13,
-      "jobs_per_day": 3.17,
-      "aov_completion_rate": null,
-      "repairs_per_job": 2.42,
-      "cancel_rate": 31.6,
-      "completed_jobs": 19,
-      "days_worked": 6.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Nashville",
-      "name": "Clint Hyde",
-      "isactive": true,
-      "total_revenue": 9760.62,
-      "avg_ticket": 513.72,
-      "jobs_per_day": 3.17,
-      "aov_completion_rate": null,
-      "repairs_per_job": 2.47,
-      "cancel_rate": 36.4,
-      "completed_jobs": 19,
-      "days_worked": 6.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Miami",
-      "name": "Chris Abreu",
-      "isactive": true,
-      "total_revenue": 14250.58,
-      "avg_ticket": 1295.51,
-      "jobs_per_day": 2.75,
-      "aov_completion_rate": null,
-      "repairs_per_job": 3.82,
-      "cancel_rate": 23.5,
-      "completed_jobs": 11,
-      "days_worked": 4.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Orlando",
-      "name": "Maui Cruz",
-      "isactive": true,
-      "total_revenue": 8260.94,
-      "avg_ticket": 516.31,
-      "jobs_per_day": 2.67,
-      "aov_completion_rate": null,
-      "repairs_per_job": 2.31,
-      "cancel_rate": 9.5,
-      "completed_jobs": 16,
-      "days_worked": 6.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Austin",
-      "name": "Kevin Camacho",
-      "isactive": true,
-      "total_revenue": 8037.27,
-      "avg_ticket": 446.52,
-      "jobs_per_day": 2.25,
-      "aov_completion_rate": null,
-      "repairs_per_job": 1.83,
-      "cancel_rate": 22.2,
-      "completed_jobs": 18,
-      "days_worked": 8.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Dallas",
-      "name": "Marcus Thompson",
-      "isactive": true,
-      "total_revenue": 6971.21,
-      "avg_ticket": 497.94,
-      "jobs_per_day": 3.5,
-      "aov_completion_rate": null,
-      "repairs_per_job": 2.14,
-      "cancel_rate": 25.0,
-      "completed_jobs": 14,
-      "days_worked": 4.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Atlanta",
-      "name": "Josh Horowitz",
-      "isactive": true,
-      "total_revenue": 9503.17,
-      "avg_ticket": 500.17,
-      "jobs_per_day": 4.75,
-      "aov_completion_rate": null,
-      "repairs_per_job": 2.16,
-      "cancel_rate": 8.7,
-      "completed_jobs": 19,
-      "days_worked": 4.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Orlando",
-      "name": "Mario Rentas",
-      "isactive": true,
-      "total_revenue": 2672.58,
-      "avg_ticket": 381.8,
-      "jobs_per_day": 3.5,
-      "aov_completion_rate": null,
-      "repairs_per_job": 1.57,
-      "cancel_rate": 0.0,
-      "completed_jobs": 7,
-      "days_worked": 2.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Dallas",
-      "name": "Pablo Chavez",
-      "isactive": true,
-      "total_revenue": 9147.92,
-      "avg_ticket": 457.4,
-      "jobs_per_day": 3.33,
-      "aov_completion_rate": null,
-      "repairs_per_job": 1.95,
-      "cancel_rate": 24.1,
-      "completed_jobs": 20,
-      "days_worked": 6.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Dallas",
-      "name": "Michael Herring",
-      "isactive": true,
-      "total_revenue": 4298.69,
-      "avg_ticket": 614.1,
-      "jobs_per_day": 2.33,
-      "aov_completion_rate": null,
-      "repairs_per_job": 3.71,
-      "cancel_rate": 13.3,
-      "completed_jobs": 7,
-      "days_worked": 3.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Nashville",
-      "name": "Tim Buckley",
-      "isactive": true,
-      "total_revenue": 2484.65,
-      "avg_ticket": 414.11,
-      "jobs_per_day": 3.0,
-      "aov_completion_rate": null,
-      "repairs_per_job": 1.67,
-      "cancel_rate": 22.2,
-      "completed_jobs": 6,
-      "days_worked": 2.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Atlanta",
-      "name": "Jay Johnson",
-      "isactive": true,
-      "total_revenue": 5987.36,
-      "avg_ticket": 427.67,
-      "jobs_per_day": 3.5,
-      "aov_completion_rate": null,
-      "repairs_per_job": 1.71,
-      "cancel_rate": 22.2,
-      "completed_jobs": 14,
-      "days_worked": 4.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Jacksonville",
-      "name": "Will Test Technician",
-      "isactive": true,
-      "total_revenue": 0.0,
-      "avg_ticket": null,
-      "jobs_per_day": null,
-      "aov_completion_rate": null,
-      "repairs_per_job": null,
-      "cancel_rate": 100.0,
-      "completed_jobs": 0,
-      "days_worked": null
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Houston",
-      "name": "Jorge Montenegro",
-      "isactive": true,
-      "total_revenue": 4097.79,
-      "avg_ticket": 372.53,
-      "jobs_per_day": 3.67,
-      "aov_completion_rate": null,
-      "repairs_per_job": 1.36,
-      "cancel_rate": 38.9,
-      "completed_jobs": 11,
-      "days_worked": 3.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Nashville",
-      "name": "Kemper Stanley",
-      "isactive": true,
-      "total_revenue": 13490.99,
-      "avg_ticket": 793.59,
-      "jobs_per_day": 2.83,
-      "aov_completion_rate": null,
-      "repairs_per_job": 4.0,
-      "cancel_rate": 18.5,
-      "completed_jobs": 17,
-      "days_worked": 6.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Atlanta",
-      "name": "Atlanta Shell",
-      "isactive": true,
-      "total_revenue": 0.0,
-      "avg_ticket": null,
-      "jobs_per_day": null,
-      "aov_completion_rate": null,
-      "repairs_per_job": null,
-      "cancel_rate": 100.0,
-      "completed_jobs": 0,
-      "days_worked": null
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "San Antonio",
-      "name": "Lee Bradley",
-      "isactive": true,
-      "total_revenue": 2659.61,
-      "avg_ticket": 531.92,
-      "jobs_per_day": 2.5,
-      "aov_completion_rate": null,
-      "repairs_per_job": 2.2,
-      "cancel_rate": 16.7,
-      "completed_jobs": 5,
-      "days_worked": 2.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Nashville",
-      "name": "Nashville Shell",
-      "isactive": true,
-      "total_revenue": 0.0,
-      "avg_ticket": null,
-      "jobs_per_day": null,
-      "aov_completion_rate": null,
-      "repairs_per_job": null,
-      "cancel_rate": 100.0,
-      "completed_jobs": 0,
-      "days_worked": null
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "San Antonio",
-      "name": "San Antonio Shell",
-      "isactive": true,
-      "total_revenue": 0.0,
-      "avg_ticket": null,
-      "jobs_per_day": null,
-      "aov_completion_rate": null,
-      "repairs_per_job": null,
-      "cancel_rate": 100.0,
-      "completed_jobs": 0,
-      "days_worked": null
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Tampa",
-      "name": "Tampa Shell",
-      "isactive": true,
-      "total_revenue": 0.0,
-      "avg_ticket": null,
-      "jobs_per_day": null,
-      "aov_completion_rate": null,
-      "repairs_per_job": null,
-      "cancel_rate": 100.0,
-      "completed_jobs": 0,
-      "days_worked": null
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Tampa",
-      "name": "Kado Torres",
-      "isactive": true,
-      "total_revenue": 3775.8,
-      "avg_ticket": 377.58,
-      "jobs_per_day": 3.33,
-      "aov_completion_rate": null,
-      "repairs_per_job": 1.7,
-      "cancel_rate": 9.1,
-      "completed_jobs": 10,
-      "days_worked": 3.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Miami",
-      "name": "Orley Gonzalez",
-      "isactive": true,
-      "total_revenue": 3076.8,
-      "avg_ticket": 439.54,
-      "jobs_per_day": 2.33,
-      "aov_completion_rate": null,
-      "repairs_per_job": 2.0,
-      "cancel_rate": 30.0,
-      "completed_jobs": 7,
-      "days_worked": 3.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Atlanta",
-      "name": "Dominique Simpson",
-      "isactive": true,
-      "total_revenue": 10536.98,
-      "avg_ticket": 619.82,
-      "jobs_per_day": 2.83,
-      "aov_completion_rate": null,
-      "repairs_per_job": 3.0,
-      "cancel_rate": 32.3,
-      "completed_jobs": 17,
-      "days_worked": 6.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Dallas",
-      "name": "Jiovanny Perez",
-      "isactive": true,
-      "total_revenue": 13395.68,
-      "avg_ticket": 558.15,
-      "jobs_per_day": 3.43,
-      "aov_completion_rate": null,
-      "repairs_per_job": 2.58,
-      "cancel_rate": 19.4,
-      "completed_jobs": 24,
-      "days_worked": 7.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Austin",
-      "name": "Mario Gonzalez",
-      "isactive": true,
-      "total_revenue": 6727.52,
-      "avg_ticket": 611.59,
-      "jobs_per_day": 2.75,
-      "aov_completion_rate": null,
-      "repairs_per_job": 3.0,
-      "cancel_rate": 0.0,
-      "completed_jobs": 11,
-      "days_worked": 4.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Orlando",
-      "name": "Derwin Martinez",
-      "isactive": true,
-      "total_revenue": 6315.11,
-      "avg_ticket": 451.08,
-      "jobs_per_day": 2.8,
-      "aov_completion_rate": null,
-      "repairs_per_job": 1.93,
-      "cancel_rate": 33.3,
-      "completed_jobs": 14,
-      "days_worked": 5.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Dallas",
-      "name": "Eddie Catalan",
-      "isactive": true,
-      "total_revenue": 16207.96,
-      "avg_ticket": 675.33,
-      "jobs_per_day": 3.43,
-      "aov_completion_rate": null,
-      "repairs_per_job": 3.12,
-      "cancel_rate": 27.3,
-      "completed_jobs": 24,
-      "days_worked": 7.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Houston",
-      "name": "Tommy Moore",
-      "isactive": true,
-      "total_revenue": 12911.99,
-      "avg_ticket": 496.62,
-      "jobs_per_day": 3.71,
-      "aov_completion_rate": null,
-      "repairs_per_job": 2.19,
-      "cancel_rate": 20.0,
-      "completed_jobs": 26,
-      "days_worked": 7.0
-    },
-    {
-      "month": "2026-03",
-      "month_label": "March 2026",
-      "market": "Tampa",
-      "name": "Jack Currie",
-      "isactive": true,
-      "total_revenue": 7012.53,
-      "avg_ticket": 412.5,
-      "jobs_per_day": 2.83,
-      "aov_completion_rate": null,
-      "repairs_per_job": 1.76,
-      "cancel_rate": 17.4,
-      "completed_jobs": 17,
-      "days_worked": 6.0
-    }
-  ]
-};
+let RAW = { months: [], markets: [], records: [] };
 
-
-let currentMonth = RAW.months[0][0];
+let currentMonth = '';
 let currentMarket = 'All';
 let currentSort = 'total_revenue';
 
-// Init month dropdown
-const monthSel = document.getElementById('monthSelect');
-RAW.months.forEach(([key, label]) => {
-  const opt = document.createElement('option');
-  opt.value = key; opt.textContent = label;
-  monthSel.appendChild(opt);
-});
-monthSel.value = currentMonth;
-monthSel.addEventListener('change', e => { currentMonth = e.target.value; render(); });
+async function loadData() {
+  try {
+    const response = await fetch('./data.json');
+    if (!response.ok) {
+      throw new Error(`Failed to load data.json: ${response.status}`);
+    }
 
-// Init market filter
-const mf = document.getElementById('marketFilter');
-['All', ...RAW.markets].forEach(m => {
-  const btn = document.createElement('button');
-  btn.className = 'market-pill' + (m === 'All' ? ' active' : '');
-  btn.textContent = m;
-  btn.addEventListener('click', () => {
-    currentMarket = m;
-    document.querySelectorAll('.market-pill').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    RAW = await response.json();
+
+    if (!RAW.months || !RAW.markets || !RAW.records) {
+      throw new Error('data.json is missing months, markets, or records');
+    }
+
+    currentMonth = RAW.months.length ? RAW.months[0][0] : '';
+
+    initUI();
     render();
-  });
-  mf.appendChild(btn);
-});
+  } catch (error) {
+    console.error(error);
+    document.getElementById('leaderboard').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <div class="empty-text">Failed to load dashboard data.</div>
+      </div>
+    `;
+  }
+}
 
-// Sort buttons
-document.querySelectorAll('.sort-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    currentSort = btn.dataset.sort;
-    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+function initUI() {
+  const monthSel = document.getElementById('monthSelect');
+  monthSel.innerHTML = '';
+  RAW.months.forEach(([key, label]) => {
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = label;
+    monthSel.appendChild(opt);
+  });
+  monthSel.value = currentMonth;
+  monthSel.onchange = e => {
+    currentMonth = e.target.value;
     render();
-  });
-});
+  };
 
-// Last updated
-const months = RAW.months;
-if (months.length > 0) {
-  document.getElementById('lastUpdated').textContent = months[0][1];
+  const mf = document.getElementById('marketFilter');
+  mf.innerHTML = '';
+  ['All', ...RAW.markets].forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'market-pill' + (m === 'All' ? ' active' : '');
+    btn.textContent = m;
+    btn.addEventListener('click', () => {
+      currentMarket = m;
+      document.querySelectorAll('.market-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render();
+    });
+    mf.appendChild(btn);
+  });
+
+  document.querySelectorAll('.sort-btn').forEach(btn => {
+    btn.onclick = () => {
+      currentSort = btn.dataset.sort;
+      document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render();
+    };
+  });
+
+  if (RAW.months.length > 0) {
+    document.getElementById('lastUpdated').textContent = RAW.months[0][1];
+  }
 }
 
 function fmt$(val) {
@@ -1200,13 +738,10 @@ function jpdColor(val) {
 }
 
 function render() {
-  // Filter
   let records = RAW.records.filter(r => r.month === currentMonth);
   if (currentMarket !== 'All') records = records.filter(r => r.market === currentMarket);
-  // Only techs with some activity OR days worked
   records = records.filter(r => r.completed_jobs > 0 || r.days_worked > 0);
 
-  // Sort
   records = [...records].sort((a, b) => {
     if (currentSort === 'total_revenue') return (b.total_revenue||0) - (a.total_revenue||0);
     if (currentSort === 'avg_ticket') return (b.avg_ticket||0) - (a.avg_ticket||0);
@@ -1216,24 +751,23 @@ function render() {
     return 0;
   });
 
-  // Stats summary
-const totalRev = records.reduce((s, r) => s + (r.total_revenue || 0), 0);
-const avgTicket = records.filter(r => r.avg_ticket).reduce((s, r, _, a) => s + r.avg_ticket / a.length, 0);
-const avgJPD = records.filter(r => r.jobs_per_day).reduce((s, r, _, a) => s + r.jobs_per_day / a.length, 0);
-const avgCancel = records.filter(r => r.cancel_rate != null).reduce((s, r, _, a) => s + r.cancel_rate / a.length, 0);
-const avgAOVCompletion = records.filter(r => r.aov_completion_rate != null)
-  .reduce((s, r, _, a) => s + r.aov_completion_rate / a.length, 0);
+  const totalRev = records.reduce((s, r) => s + (r.total_revenue || 0), 0);
+  const avgTicket = records.filter(r => r.avg_ticket).reduce((s, r, _, a) => s + r.avg_ticket / a.length, 0);
+  const avgJPD = records.filter(r => r.jobs_per_day).reduce((s, r, _, a) => s + r.jobs_per_day / a.length, 0);
+  const avgCancel = records.filter(r => r.cancel_rate != null).reduce((s, r, _, a) => s + r.cancel_rate / a.length, 0);
+  const avgAOVCompletion = records.filter(r => r.aov_completion_rate != null)
+    .reduce((s, r, _, a) => s + r.aov_completion_rate / a.length, 0);
 
-const statsBar = document.getElementById('statsBar');
-statsBar.innerHTML = [
-  { val: records.length, lbl: 'Technicians' },
-  { val: totalRev >= 1000 ? '$' + (totalRev / 1000).toFixed(0) + 'K' : '$' + totalRev.toFixed(0), lbl: 'Total Rev' },
-  { val: '$' + (avgTicket || 0).toFixed(0), lbl: 'Avg Ticket' },
-  { val: (avgJPD || 0).toFixed(1), lbl: 'Avg Jobs/Day' },
-  { val: (avgCancel || 0).toFixed(1) + '%', lbl: 'Avg Cancel' },
-  { val: (avgAOVCompletion || 0).toFixed(1) + '%', lbl: 'Avg AOV Cmpl' },
-].map(s => `<div class="stat-chip"><div class="stat-chip-val">${s.val}</div><div class="stat-chip-lbl">${s.lbl}</div></div>`).join('');
-  // Cards
+  const statsBar = document.getElementById('statsBar');
+  statsBar.innerHTML = [
+    { val: records.length, lbl: 'Technicians' },
+    { val: totalRev >= 1000 ? '$' + (totalRev / 1000).toFixed(0) + 'K' : '$' + totalRev.toFixed(0), lbl: 'Total Rev' },
+    { val: '$' + (avgTicket || 0).toFixed(0), lbl: 'Avg Ticket' },
+    { val: (avgJPD || 0).toFixed(1), lbl: 'Avg Jobs/Day' },
+    { val: (avgCancel || 0).toFixed(1) + '%', lbl: 'Avg Cancel' },
+    { val: (avgAOVCompletion || 0).toFixed(1) + '%', lbl: 'Avg AOV Cmpl' },
+  ].map(s => `<div class="stat-chip"><div class="stat-chip-val">${s.val}</div><div class="stat-chip-lbl">${s.lbl}</div></div>`).join('');
+
   const lb = document.getElementById('leaderboard');
 
   if (records.length === 0) {
@@ -1280,7 +814,7 @@ statsBar.innerHTML = [
   }).join('');
 }
 
-render();
+loadData();
 </script>
 </body>
 </html>
