@@ -1,819 +1,937 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>NuBrakes | Technician Leaderboard</title>
-<style>
-  :root {
-    --orange: #FF6B35;
-    --orange-light: #fff3ef;
-    --orange-dark: #e05520;
-    --navy: #1a1f3c;
-    --gray-bg: #f4f5f7;
-    --card-bg: #ffffff;
-    --text-primary: #1a1f3c;
-    --text-secondary: #6b7280;
-    --border: #e5e7eb;
-    --gold: #f59e0b;
-    --silver: #9ca3af;
-    --bronze: #cd7c32;
-    --green: #10b981;
-    --red: #ef4444;
-    --radius: 14px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.08);
-    --max-width: 1280px;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--gray-bg);
-    color: var(--text-primary);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .container {
-    width: min(100%, var(--max-width));
-    margin: 0 auto;
-  }
-
-  /* HEADER */
-  .header {
-    background: var(--navy);
-    padding: 16px 16px 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
-  }
-
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 14px;
-  }
-
-  .logo {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  min-width: 0;
-}
-
-  .logo-icon {
-  width: 244px;
-  height: 44px;
-  background: #fff;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  overflow: hidden;
-  padding: 0;
-}
-
-.logo-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-  .logo-text {
-    font-size: 18px;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: -0.3px;
-  }
-
-  .logo-sub {
-    font-size: 11px;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    display: block;
-    margin-top: -2px;
-  }
-
-  .month-select-wrap {
-    position: relative;
-    flex-shrink: 0;
-  }
-
-  .month-select {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: #fff;
-    padding: 8px 30px 8px 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    appearance: none;
-    cursor: pointer;
-    outline: none;
-    min-width: 130px;
-  }
-
-  .month-select option {
-    background: var(--navy);
-    color: #fff;
-  }
-
-  .select-arrow {
-    position: absolute;
-    right: 9px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: rgba(255,255,255,0.6);
-    font-size: 10px;
-  }
-
-  /* MARKET FILTER */
-  .market-scroll {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 12px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .market-scroll::-webkit-scrollbar { display: none; }
-
-  .market-pill {
-    flex-shrink: 0;
-    padding: 7px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    transition: all 0.18s ease;
-    background: rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.7);
-    letter-spacing: 0.2px;
-  }
-
-  .market-pill.active {
-    background: var(--orange);
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(255,107,53,0.4);
-  }
-
-  .market-pill:hover:not(.active) {
-    background: rgba(255,255,255,0.18);
-    color: #fff;
-  }
-
-  /* SORT BAR */
-  .sort-bar {
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .sort-bar::-webkit-scrollbar { display: none; }
-
-  .sort-label {
-    font-size: 11px;
-    color: var(--text-secondary);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    margin-right: 2px;
-    flex-shrink: 0;
-  }
-
-  .sort-btn {
-    flex-shrink: 0;
-    padding: 10px 12px;
-    border: none;
-    background: transparent;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    white-space: nowrap;
-    transition: all 0.15s ease;
-  }
-
-  .sort-btn.active {
-    color: var(--orange);
-    border-bottom-color: var(--orange);
-  }
-
-  /* STATS SUMMARY BAR */
-.stats-bar {
-  padding: 12px 16px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.stat-chip {
-  background: #fff;
-  border-radius: 12px;
-  padding: 12px;
-  box-shadow: var(--shadow);
-  text-align: center;
-  min-width: 0;
-}
-
-.stat-chip-val {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.stat-chip-lbl {
-  font-size: 10px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  margin-top: 2px;
-}
-
-@media (min-width: 640px) {
-  .stats-bar {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    padding: 16px 24px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .stats-bar {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    padding: 20px 32px;
-  }
-}
-
-  /* LEADERBOARD */
-  .leaderboard {
-    padding: 0 12px 24px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  /* TECH CARD */
-  .tech-card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    border: 1.5px solid transparent;
-    transition: transform 0.15s ease, box-shadow 0.18s ease;
-  }
-
-  .tech-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  }
-
-  .tech-card.rank-1 { border-color: var(--gold); }
-  .tech-card.rank-2 { border-color: var(--silver); }
-  .tech-card.rank-3 { border-color: var(--bronze); }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    padding: 12px 14px 10px;
-    gap: 12px;
-  }
-
-  .rank-badge {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    font-weight: 800;
-    flex-shrink: 0;
-  }
-
-  .rank-1 .rank-badge { background: #fff8e1; color: var(--gold); }
-  .rank-2 .rank-badge { background: #f3f4f6; color: var(--silver); }
-  .rank-3 .rank-badge { background: #fef3e2; color: var(--bronze); }
-  .rank-other .rank-badge { background: var(--gray-bg); color: var(--text-secondary); font-size: 13px; }
-
-  .tech-info {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .tech-name {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .tech-market {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    margin-top: 3px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--orange);
-    background: var(--orange-light);
-    padding: 2px 8px;
-    border-radius: 10px;
-  }
-
-  .card-revenue {
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  .revenue-val {
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--text-primary);
-    letter-spacing: -0.5px;
-  }
-
-  .revenue-lbl {
-    font-size: 10px;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-  }
-
-  /* METRICS GRID */
-  .metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    border-top: 1px solid var(--border);
-  }
-
-  .metric-cell {
-    padding: 11px 8px;
-    text-align: center;
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-
-  .metric-cell:nth-child(2n) {
-    border-right: none;
-  }
-
-  .metric-cell:nth-last-child(-n+2) {
-    border-bottom: none;
-  }
-
-  .metric-val {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-
-  .metric-val.na {
-    color: var(--text-secondary);
-    font-size: 12px;
-    font-weight: 500;
-  }
-
-  .metric-val.good { color: var(--green); }
-  .metric-val.bad { color: var(--red); }
-
-  .metric-lbl {
-    font-size: 9.5px;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    margin-top: 2px;
-    line-height: 1.2;
-  }
-
-  /* EMPTY STATE */
-  .empty-state {
-    text-align: center;
-    padding: 48px 24px;
-    color: var(--text-secondary);
-  }
-
-  .empty-icon {
-    font-size: 48px;
-    margin-bottom: 12px;
-  }
-
-  .empty-text {
-    font-size: 15px;
-    font-weight: 600;
-  }
-
-  /* FOOTER NOTE */
-  .footer-note {
-    text-align: center;
-    font-size: 11px;
-    color: var(--text-secondary);
-    padding: 8px 16px 32px;
-    line-height: 1.5;
-  }
-
-  .footer-note strong { color: var(--orange); }
-
-  /* TABLET */
-  @media (min-width: 640px) {
-    .header {
-      padding: 18px 24px 0;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NuBrakes Technician Leaderboard</title>
+  <style>
+    :root{
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --soft:#9ca3af;
+      --border:#e5e7eb;
+      --border-soft:#f1f5f9;
+      --green:#10b981;
+      --red:#f43f5e;
+      --indigo:#6366f1;
+      --blue:#0ea5e9;
+      --teal:#14b8a6;
+      --violet:#8b5cf6;
+      --amber:#f59e0b;
+      --orange:#FF6B35;
+      --dark:#111827;
+      --shadow:0 1px 4px rgba(0,0,0,0.06);
+      --radius:12px;
     }
 
-    .stats-bar {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      padding: 16px 24px;
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    button, input, select { font: inherit; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .app { min-height: 100vh; padding: 20px 16px; }
+    .container { max-width: 1240px; margin: 0 auto; }
+
+    .header { margin-bottom: 20px; }
+    .brand-row {
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:10px;
+      margin-bottom:8px;
     }
 
-    .leaderboard {
-      padding: 0 24px 32px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .logo-card {
+      width:244px;
+      height:44px;
+      background:#fff;
+      border:1px solid var(--border-soft);
+      border-radius:8px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      flex:0 0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    .metrics-grid {
-      grid-template-columns: repeat(3, 1fr);
+    .logo-card img {
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
     }
 
-    .metric-cell {
-      border-bottom: none;
-      border-right: 1px solid var(--border);
-    }
+    .title-wrap { min-width:220px; }
+    .title { margin: 0; font-size: 20px; font-weight: 700; }
+    .subtitle { margin: 3px 0 0; font-size: 12px; color: var(--muted); }
 
-    .metric-cell:nth-child(3n) {
-      border-right: none;
-    }
-
-    .metric-cell:nth-child(n+4) {
-      border-top: 1px solid var(--border);
-    }
-  }
-
-  /* DESKTOP */
-  @media (min-width: 1024px) {
-    .header {
-      padding: 20px 32px 0;
-    }
-
-    .header-top,
-    .market-scroll,
-    .sort-bar,
-    .stats-bar,
-    .leaderboard,
-    .footer-note {
-      width: min(100%, var(--max-width));
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .market-scroll {
+    .status-row {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-top:6px;
       flex-wrap: wrap;
-      overflow: visible;
-      justify-content: flex-start;
-      padding-bottom: 16px;
     }
 
-    .sort-bar {
-      padding: 0 32px;
+    .badge {
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:3px 10px;
+      border-radius:20px;
+      border:1px solid;
+      font-size:11px;
+      font-weight:600;
+    }
+    .badge-dot { width:6px; height:6px; border-radius:999px; flex:0 0 auto; }
+    .badge.live { background:#ecfdf5; border-color:#6ee7b7; color:#065f46; }
+    .badge.live .badge-dot { background:#10b981; }
+    .badge.sample { background:#fff7ed; border-color:#fed7aa; color:#c2410c; }
+    .badge.sample .badge-dot { background:#f97316; }
+
+    .controls {
+      display:flex;
+      gap:8px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+      align-items:center;
     }
 
-    .stats-bar {
-      padding: 20px 32px;
+    .period-btn {
+      padding:6px 16px;
+      border-radius:20px;
+      border:none;
+      font-size:12px;
+      font-weight:600;
+      cursor:pointer;
+      background:#fff;
+      color:var(--muted);
+      box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    }
+    .period-btn.active { background:var(--dark); color:#fff; box-shadow:none; }
+
+    .select, .search-input {
+      padding:9px 12px;
+      border-radius:8px;
+      border:1.5px solid var(--border);
+      font-size:13px;
+      color:#374151;
+      background:#fff;
+      min-width:150px;
+      max-width:100%;
+      outline:none;
+    }
+    .select { cursor:pointer; }
+    .search-input { min-width:220px; }
+
+    .tabs {
+      display:flex;
+      margin-bottom:22px;
+      border-bottom:1.5px solid var(--border);
+      overflow-x:auto;
+    }
+    .tab-btn {
+      padding:8px 20px;
+      border:none;
+      background:none;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      color:var(--soft);
+      border-bottom:2px solid transparent;
+      margin-bottom:-1.5px;
+      white-space:nowrap;
+    }
+    .tab-btn.active { color:var(--text); border-bottom-color:var(--text); }
+
+    .card {
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:16px 18px 14px;
+      box-shadow:var(--shadow);
+      border:1px solid var(--border-soft);
+    }
+    .card.tight { padding:14px 16px; }
+
+    .section-grid {
+      display:grid;
+      gap:12px;
+      margin-bottom:20px;
+      grid-template-columns:repeat(auto-fill, minmax(190px, 1fr));
     }
 
-    .leaderboard {
-      padding: 0 32px 40px;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+    .section-label {
+      font-size:10px;
+      font-weight:600;
+      color:var(--soft);
+      text-transform:uppercase;
+      letter-spacing:0.05em;
+      margin-bottom:5px;
     }
 
-    .logo-text {
-      font-size: 20px;
+    .metric-value {
+      font-size:22px;
+      font-weight:700;
+      color:var(--text);
+      margin-bottom:8px;
     }
 
-    .logo-sub {
-      font-size: 12px;
+    .metric-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:8px;
     }
 
-    .tech-name {
-      font-size: 16px;
+    .delta-chip {
+      font-size:11px;
+      font-weight:600;
+      padding:2px 7px;
+      border-radius:20px;
+      white-space:nowrap;
+    }
+    .delta-chip.good { color:var(--green); background:#ecfdf5; }
+    .delta-chip.bad { color:var(--red); background:#fff1f2; }
+    .delta-chip.neutral { color:var(--muted); background:#f3f4f6; }
+
+    .small-muted { font-size:10px; color:var(--soft); }
+    .small-strong { font-size:12px; font-weight:700; color:var(--muted); }
+
+    .toolbar {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:16px;
+      flex-wrap:wrap;
     }
 
-    .revenue-val {
-      font-size: 20px;
+    .pill-group { display:flex; gap:8px; flex-wrap:wrap; }
+
+    .metric-pill {
+      padding:5px 13px;
+      border-radius:20px;
+      font-size:12px;
+      font-weight:600;
+      cursor:pointer;
+      background:#fff;
+      color:var(--muted);
+      border:1.5px solid var(--border);
+    }
+    .metric-pill.active { border-color:var(--dark); background:var(--dark); color:#fff; }
+
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:720px; }
+    th, td {
+      padding:10px 12px;
+      border-bottom:1px solid var(--border);
+      text-align:left;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    th {
+      background:#f8fafc;
+      color:var(--soft);
+      text-transform:uppercase;
+      letter-spacing:0.04em;
+      font-size:10px;
+      font-weight:800;
+    }
+    td { color:var(--text); font-weight:600; }
+    tr:last-child td { border-bottom:none; }
+
+    .rank-chip {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:34px;
+      padding:3px 7px;
+      border-radius:999px;
+      background:#f3f4f6;
+      font-size:11px;
+      font-weight:800;
+      color:var(--muted);
+    }
+    .rank-chip.top1 { background:#fef9c3; color:#854d0e; }
+    .rank-chip.top2 { background:#f1f5f9; color:#334155; }
+    .rank-chip.top3 { background:#fdf3e7; color:#92400e; }
+
+    .tech-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+      gap:12px;
+      margin-bottom:20px;
     }
 
-    .metric-val {
-      font-size: 16px;
+    .tech-card {
+      background:#fff;
+      border:1px solid var(--border-soft);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
     }
 
-    .metric-lbl {
-      font-size: 10px;
+    .tech-head {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border-bottom:1px solid var(--border-soft);
     }
 
-    .footer-note {
-      padding: 12px 32px 40px;
-      font-size: 12px;
-    }
-  }
+    .tech-name-row { display:flex; align-items:center; gap:8px; min-width:0; }
+    .tech-name { font-size:14px; font-weight:800; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .tech-market { margin-top:4px; font-size:11px; color:var(--muted); font-weight:600; }
+    .tech-rev { text-align:right; flex-shrink:0; }
+    .tech-rev .value { font-size:18px; font-weight:800; color:var(--text); }
+    .tech-rev .label { font-size:10px; color:var(--soft); text-transform:uppercase; letter-spacing:0.05em; }
 
-  /* SMALL PHONE */
-  @media (max-width: 420px) {
-    .header-top {
-      align-items: flex-start;
+    .mini-grid {
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+    }
+    .mini-cell {
+      padding:10px 12px;
+      border-right:1px solid var(--border-soft);
+      border-bottom:1px solid var(--border-soft);
+    }
+    .mini-cell:nth-child(2n) { border-right:none; }
+    .mini-cell:nth-last-child(-n+2) { border-bottom:none; }
+    .mini-label { font-size:10px; color:var(--soft); text-transform:uppercase; letter-spacing:0.04em; font-weight:700; }
+    .mini-value { margin-top:3px; font-size:14px; color:var(--text); font-weight:800; }
+    .mini-value.good { color:var(--green); }
+    .mini-value.bad { color:var(--red); }
+    .mini-value.warn { color:var(--amber); }
+
+    .loading {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100vh;
+      color:var(--muted);
+      flex-direction:column;
+      gap:12px;
     }
 
-    .month-select {
-      min-width: 115px;
-      font-size: 12px;
+    .spinner {
+      width:32px;
+      height:32px;
+      border:3px solid var(--border);
+      border-top:3px solid var(--indigo);
+      border-radius:50%;
+      animation:spin 1s linear infinite;
     }
 
-    .logo-text {
-      font-size: 16px;
-    }
+    .hidden { display:none !important; }
 
-    .logo-sub {
-      font-size: 10px;
+    @media (max-width: 639px) {
+      .app { padding:12px; }
+      .brand-row { align-items:flex-start; }
+      .logo-card { width:210px; height:38px; }
+      .title { font-size:18px; }
+      .controls { align-items:stretch; }
+      .select, .search-input { min-width:100%; width:100%; }
+      .section-grid { grid-template-columns:1fr; }
+      .tech-grid { grid-template-columns:1fr; }
+      .toolbar { flex-direction:column; align-items:stretch; }
     }
-
-    .revenue-val {
-      font-size: 16px;
-    }
-
-    .metric-val {
-      font-size: 14px;
-    }
-  }
-</style>
+  </style>
 </head>
-<body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-top">
-    <div class="logo">
-      <div class="logo-icon logo-image-wrap">
-  <img
-    src="https://userimg-assets.customeriomail.com/images/client-env-117616/1719491779550_Screen%20Shot%202024-06-27%20at%207.35.51%20AM_01J1CV4Q25TNB8KBYYZKX9Z5ST.png"
-    alt="NuBrakes logo"
-    class="logo-image"
-  >
-</div>
-      <div>
-        <div class="logo-text">NuBrakes</div>
-        <span class="logo-sub">Technician Leaderboard</span>
+<body>
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <span>Loading live technician data...</span>
+  </div>
+
+  <div id="app" class="app hidden">
+    <div class="container">
+      <div class="header">
+        <div class="brand-row">
+          <div class="logo-card">
+            <img
+              src="https://userimg-assets.customeriomail.com/images/client-env-117616/1719491779550_Screen%20Shot%202024-06-27%20at%207.35.51%20AM_01J1CV4Q25TNB8KBYYZKX9Z5ST.png"
+              alt="NuBrakes logo"
+            />
+          </div>
+          <div class="title-wrap">
+            <h1 class="title">NuBrakes Technician Leaderboard</h1>
+            <p id="subtitle" class="subtitle"></p>
+            <div class="status-row">
+              <div id="dataBadge" class="badge live">
+                <div class="badge-dot"></div>
+                <span id="dataBadgeText">Live Data</span>
+              </div>
+              <span id="fallbackNote" class="small-muted hidden">⚠️ Live data unavailable</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="month-select-wrap">
-      <select class="month-select" id="monthSelect"></select>
-      <span class="select-arrow">▼</span>
+
+      <div class="controls">
+        <button class="period-btn" data-grain="day">Day</button>
+        <button class="period-btn" data-grain="week">Week</button>
+        <button class="period-btn active" data-grain="month">Month</button>
+
+        <select id="periodSelect" class="select"></select>
+        <select id="marketSelect" class="select"></select>
+        <input id="searchInput" class="search-input" placeholder="Search technician..." />
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="overview">Overview</button>
+        <button class="tab-btn" data-tab="revenue">Revenue</button>
+        <button class="tab-btn" data-tab="coaching">Week-by-Week Coaching</button>
+      </div>
+
+      <div id="overviewTab">
+        <div id="kpiGrid" class="section-grid"></div>
+
+        <div class="toolbar">
+          <div class="section-label" style="margin-bottom:0;">Technician Leaderboard</div>
+          <div id="sortToolbar" class="pill-group">
+            <button class="metric-pill active" data-sort="total_revenue">Revenue ↓</button>
+            <button class="metric-pill" data-sort="avg_ticket">Avg Ticket</button>
+            <button class="metric-pill" data-sort="jobs_per_day">Jobs/Day</button>
+            <button class="metric-pill" data-sort="repairs_per_job">Repairs/Job</button>
+            <button class="metric-pill" data-sort="aov_completion_rate">AOV Cmpl</button>
+          </div>
+        </div>
+
+        <div id="leaderboard" class="tech-grid"></div>
+      </div>
+
+      <div id="revenueTab" class="hidden">
+        <div id="revenueKpiGrid" class="section-grid"></div>
+        <div class="card">
+          <div class="section-label">Revenue Leaderboard</div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Technician</th>
+                  <th>Market</th>
+                  <th>Revenue</th>
+                  <th>MTD Revenue</th>
+                  <th>Avg Ticket</th>
+                  <th>Tech Efficiency</th>
+                  <th>Jobs/Day</th>
+                  <th>Service Call %</th>
+                </tr>
+              </thead>
+              <tbody id="revenueRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="coachingTab" class="hidden">
+        <div id="weeklyPanel"></div>
+      </div>
     </div>
   </div>
-  <div class="market-scroll" id="marketFilter"></div>
-</div>
 
-<!-- SORT BAR -->
-<div class="sort-bar">
-  <span class="sort-label">Sort:</span>
-  <button class="sort-btn active" data-sort="total_revenue">Revenue</button>
-  <button class="sort-btn" data-sort="avg_ticket">Avg Ticket</button>
-  <button class="sort-btn" data-sort="jobs_per_day">Jobs/Day</button>
-  <button class="sort-btn" data-sort="repairs_per_job">Repairs/Job</button>
-  <button class="sort-btn" data-sort="cancel_rate_asc">Cancel Rate ↑</button>
-</div>
+  <script>
+    const DATA_URL = "https://raw.githubusercontent.com/nubrakes-analytics/NuBrakes-Copilot/main/data/fact_nubrakes_technician_daily.json";
 
-<!-- STATS SUMMARY -->
-<div class="stats-bar" id="statsBar"></div>
-
-<!-- LEADERBOARD -->
-<div class="leaderboard" id="leaderboard"></div>
-
-<!-- FOOTER -->
-<div class="footer-note">
-  Data refreshes daily Last updated: <span id="lastUpdated"></span>
-</div>
-
-<script>
-let RAW = { months: [], markets: [], records: [] };
-
-let currentMonth = '';
-let currentMarket = 'All';
-let currentSort = 'total_revenue';
-
-async function loadData() {
-  try {
-    const response = await fetch('./data.json');
-    if (!response.ok) {
-      throw new Error(`Failed to load data.json: ${response.status}`);
-    }
-
-    RAW = await response.json();
-
-    if (!RAW.months || !RAW.markets || !RAW.records) {
-      throw new Error('data.json is missing months, markets, or records');
-    }
-
-    currentMonth = RAW.months.length ? RAW.months[0][0] : '';
-
-    initUI();
-    render();
-  } catch (error) {
-    console.error(error);
-    document.getElementById('leaderboard').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">⚠️</div>
-        <div class="empty-text">Failed to load dashboard data.</div>
-      </div>
-    `;
-  }
-}
-
-function initUI() {
-  const monthSel = document.getElementById('monthSelect');
-  monthSel.innerHTML = '';
-  RAW.months.forEach(([key, label]) => {
-    const opt = document.createElement('option');
-    opt.value = key;
-    opt.textContent = label;
-    monthSel.appendChild(opt);
-  });
-  monthSel.value = currentMonth;
-  monthSel.onchange = e => {
-    currentMonth = e.target.value;
-    render();
-  };
-
-  const mf = document.getElementById('marketFilter');
-  mf.innerHTML = '';
-  ['All', ...RAW.markets].forEach(m => {
-    const btn = document.createElement('button');
-    btn.className = 'market-pill' + (m === 'All' ? ' active' : '');
-    btn.textContent = m;
-    btn.addEventListener('click', () => {
-      currentMarket = m;
-      document.querySelectorAll('.market-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      render();
-    });
-    mf.appendChild(btn);
-  });
-
-  document.querySelectorAll('.sort-btn').forEach(btn => {
-    btn.onclick = () => {
-      currentSort = btn.dataset.sort;
-      document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      render();
+    const state = {
+      rawData: [],
+      fallback: false,
+      grain: "month",
+      period: "",
+      market: "All Markets",
+      search: "",
+      tab: "overview",
+      sortKey: "total_revenue",
+      sortDir: "desc",
+      coachingTech: "All Technicians"
     };
-  });
 
-  if (RAW.months.length > 0) {
-    document.getElementById('lastUpdated').textContent = RAW.months[0][1];
-  }
-}
-
-function fmt$(val) {
-  if (val == null) return '–';
-  if (val >= 1000) return '$' + (val/1000).toFixed(1) + 'K';
-  return '$' + val.toFixed(0);
-}
-function fmtN(val, dec) {
-  if (val == null) return null;
-  return val.toFixed(dec ?? 1);
-}
-function fmtPct(val) {
-  if (val == null) return null;
-  return val.toFixed(1) + '%';
-}
-
-function rankEmoji(r) {
-  if (r === 1) return '🥇';
-  if (r === 2) return '🥈';
-  if (r === 3) return '🥉';
-  return '#' + r;
-}
-
-function rankClass(r) {
-  if (r === 1) return 'rank-1';
-  if (r === 2) return 'rank-2';
-  if (r === 3) return 'rank-3';
-  return 'rank-other';
-}
-
-function cancelColor(val) {
-  if (val == null) return '';
-  if (val <= 15) return 'good';
-  if (val >= 30) return 'bad';
-  return '';
-}
-
-function jpdColor(val) {
-  if (val == null) return '';
-  if (val >= 3.5) return 'good';
-  if (val <= 2) return 'bad';
-  return '';
-}
-
-function render() {
-  let records = RAW.records.filter(r => r.month === currentMonth);
-  if (currentMarket !== 'All') records = records.filter(r => r.market === currentMarket);
-  records = records.filter(r => r.completed_jobs > 0 || r.days_worked > 0);
-
-  records = [...records].sort((a, b) => {
-    if (currentSort === 'total_revenue') return (b.total_revenue||0) - (a.total_revenue||0);
-    if (currentSort === 'avg_ticket') return (b.avg_ticket||0) - (a.avg_ticket||0);
-    if (currentSort === 'jobs_per_day') return (b.jobs_per_day||0) - (a.jobs_per_day||0);
-    if (currentSort === 'repairs_per_job') return (b.repairs_per_job||0) - (a.repairs_per_job||0);
-    if (currentSort === 'cancel_rate_asc') return (a.cancel_rate??100) - (b.cancel_rate??100);
-    return 0;
-  });
-
-  const totalRev = records.reduce((s, r) => s + (r.total_revenue || 0), 0);
-  const avgTicket = records.filter(r => r.avg_ticket).reduce((s, r, _, a) => s + r.avg_ticket / a.length, 0);
-  const avgJPD = records.filter(r => r.jobs_per_day).reduce((s, r, _, a) => s + r.jobs_per_day / a.length, 0);
-  const avgCancel = records.filter(r => r.cancel_rate != null).reduce((s, r, _, a) => s + r.cancel_rate / a.length, 0);
-  const avgAOVCompletion = records.filter(r => r.aov_completion_rate != null)
-    .reduce((s, r, _, a) => s + r.aov_completion_rate / a.length, 0);
-
-  const statsBar = document.getElementById('statsBar');
-  statsBar.innerHTML = [
-    { val: records.length, lbl: 'Technicians' },
-    { val: totalRev >= 1000 ? '$' + (totalRev / 1000).toFixed(0) + 'K' : '$' + totalRev.toFixed(0), lbl: 'Total Rev' },
-    { val: '$' + (avgTicket || 0).toFixed(0), lbl: 'Avg Ticket' },
-    { val: (avgJPD || 0).toFixed(1), lbl: 'Avg Jobs/Day' },
-    { val: (avgCancel || 0).toFixed(1) + '%', lbl: 'Avg Cancel' },
-    { val: (avgAOVCompletion || 0).toFixed(1) + '%', lbl: 'Avg AOV Cmpl' },
-  ].map(s => `<div class="stat-chip"><div class="stat-chip-val">${s.val}</div><div class="stat-chip-lbl">${s.lbl}</div></div>`).join('');
-
-  const lb = document.getElementById('leaderboard');
-
-  if (records.length === 0) {
-    lb.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">No technicians found for this selection.</div></div>`;
-    return;
-  }
-
-  lb.innerHTML = records.map((r, i) => {
-    const rank = i + 1;
-    const rc = rankClass(rank);
-    const aovVal = r.aov_completion_rate != null ? fmtPct(r.aov_completion_rate) : null;
-
-    const metrics = [
-      { val: r.avg_ticket != null ? fmt$(r.avg_ticket) : null, lbl: 'Avg Ticket', cls: '' },
-      { val: r.jobs_per_day != null ? fmtN(r.jobs_per_day) + '/day' : null, lbl: 'Jobs Per Day', cls: jpdColor(r.jobs_per_day) },
-      { val: aovVal, lbl: 'AOV Cmpl Rate', cls: '' },
-      { val: r.repairs_per_job != null ? fmtN(r.repairs_per_job) : null, lbl: 'Repairs / Job', cls: '' },
-      { val: r.cancel_rate != null ? fmtPct(r.cancel_rate) : null, lbl: 'Cancel Rate', cls: cancelColor(r.cancel_rate) },
-      { val: r.completed_jobs != null ? r.completed_jobs + ' jobs' : null, lbl: 'Jobs Completed', cls: '' },
+    const FALLBACK = [
+      {day:"2026-03-18 00:00:00",week:"2026-03-12 00:00:00",month:"2026-03-01 00:00:00",market:"Atlanta",name:"Dominique Simpson",isactive:true,total_revenue:3193.11,booked_revenue:2301.7,avg_ticket:638.622,jobs_per_day:5,aov_completion_rate:91.5,total_repairs:10,completed_jobs_w_invoice:5,repairs_per_job:2,completed_jobs:5,days_worked:1},
+      {day:"2026-03-18 00:00:00",week:"2026-03-12 00:00:00",month:"2026-03-01 00:00:00",market:"Nashville",name:"Kemper Stanley",isactive:true,total_revenue:2840.5,booked_revenue:2100,avg_ticket:710.125,jobs_per_day:4,aov_completion_rate:93.2,total_repairs:8,completed_jobs_w_invoice:4,repairs_per_job:2,completed_jobs:4,days_worked:1},
+      {day:"2026-03-18 00:00:00",week:"2026-03-12 00:00:00",month:"2026-03-01 00:00:00",market:"Miami",name:"Maui Cruz",isactive:true,total_revenue:1820.4,booked_revenue:1600,avg_ticket:455.1,jobs_per_day:4,aov_completion_rate:88,total_repairs:7,completed_jobs_w_invoice:4,repairs_per_job:1.75,completed_jobs:4,days_worked:1}
     ];
 
-    return `
-    <div class="tech-card ${rc}">
-      <div class="card-header">
-        <div class="rank-badge">${rankEmoji(rank)}</div>
-        <div class="tech-info">
-          <div class="tech-name">${r.name}</div>
-          <div class="tech-market">📍 ${r.market}</div>
-        </div>
-        <div class="card-revenue">
-          <div class="revenue-val">${fmt$(r.total_revenue)}</div>
-          <div class="revenue-lbl">Revenue</div>
-        </div>
-      </div>
-      <div class="metrics-grid">
-        ${metrics.map(m => `
-          <div class="metric-cell">
-            <div class="metric-val ${m.val == null ? 'na' : m.cls}">${m.val ?? '–'}</div>
-            <div class="metric-lbl">${m.lbl}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>`;
-  }).join('');
-}
+    function el(id){ return document.getElementById(id); }
+    function normDate(v){ return v ? String(v).slice(0,10) : ""; }
+    function toNum(v){ const n = Number(v); return Number.isFinite(n) ? n : 0; }
+    function escapeHtml(str){ return String(str ?? "").replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
 
-loadData();
-</script>
+    function grainField(){ return state.grain === "day" ? "day" : state.grain === "week" ? "week" : "month"; }
+
+    function fmt$(v){
+      if(v == null || v === "") return "–";
+      const n = Number(v);
+      if(!Number.isFinite(n)) return "–";
+      if(Math.abs(n) >= 1000) return "$" + (n/1000).toFixed(1) + "K";
+      return "$" + n.toFixed(0);
+    }
+
+    function fmtFull$(v){ return "$" + Math.round(Number(v)||0).toLocaleString(); }
+    function fmtN(v,d=1){ return v == null || !Number.isFinite(Number(v)) ? "–" : Number(v).toFixed(d); }
+    function fmtPct(v){ return v == null || !Number.isFinite(Number(v)) ? "–" : (Number(v)*100).toFixed(1) + "%"; }
+
+    function formatPeriodLabel(val){
+      if(!val) return "—";
+      const d = new Date(val + "T00:00:00");
+      if(state.grain === "day") return d.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"});
+      if(state.grain === "week") return "Week of " + d.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"});
+      return d.toLocaleDateString("en-US", {month:"long", year:"numeric"});
+    }
+
+    function formatWeekLabel(val){
+      if(!val) return "Unknown";
+      return new Date(val + "T00:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric"});
+    }
+
+    async function loadData(){
+      const r = await fetch(DATA_URL + "?t=" + Date.now(), {cache:"no-store"});
+      if(!r.ok) throw new Error(r.status);
+      const d = await r.json();
+      if(!Array.isArray(d) || !d.length) throw new Error("empty");
+      return d;
+    }
+
+    function getPeriodOptions(){
+      const key = grainField();
+      return [...new Set(state.rawData.map(r => normDate(r[key])).filter(Boolean))].sort();
+    }
+
+    function getMarketOptions(){
+      return [...new Set(state.rawData.map(r => r.market).filter(Boolean))].sort();
+    }
+
+    function renderControls(){
+      document.querySelectorAll('.period-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.grain === state.grain));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === state.tab));
+      el('overviewTab').classList.toggle('hidden', state.tab !== 'overview');
+      el('revenueTab').classList.toggle('hidden', state.tab !== 'revenue');
+      el('coachingTab').classList.toggle('hidden', state.tab !== 'coaching');
+
+      const periodOpts = getPeriodOptions();
+      if(!state.period || !periodOpts.includes(state.period)) state.period = periodOpts[periodOpts.length - 1] || "";
+      el('periodSelect').innerHTML = periodOpts.map(p => `<option value="${p}" ${p===state.period?'selected':''}>${formatPeriodLabel(p)}</option>`).join('');
+
+      const markets = getMarketOptions();
+      if(state.market !== 'All Markets' && !markets.includes(state.market)) state.market = 'All Markets';
+      el('marketSelect').innerHTML = ['All Markets', ...markets].map(m => `<option value="${escapeHtml(m)}" ${m===state.market?'selected':''}>${escapeHtml(m)}</option>`).join('');
+
+      document.querySelectorAll('.metric-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.sort === state.sortKey);
+        if(btn.dataset.sort === state.sortKey){
+          btn.textContent = sortLabel(btn.dataset.sort) + (state.sortDir === 'desc' ? ' ↓' : ' ↑');
+        } else {
+          btn.textContent = sortLabel(btn.dataset.sort);
+        }
+      });
+    }
+
+    function sortLabel(k){
+      return {
+        total_revenue:'Revenue', avg_ticket:'Avg Ticket', jobs_per_day:'Jobs/Day', repairs_per_job:'Repairs/Job', aov_completion_rate:'AOV Cmpl'
+      }[k] || k;
+    }
+
+    function getFilteredBaseRows(forceField=null, forcePeriod=null){
+      const key = forceField || grainField();
+      const period = forcePeriod || state.period;
+      return state.rawData.filter(r => {
+        const periodOk = normDate(r[key]) === period;
+        const marketOk = state.market === 'All Markets' || r.market === state.market;
+        const searchOk = !state.search || String(r.name || '').toLowerCase().includes(state.search);
+        return periodOk && marketOk && searchOk;
+      });
+    }
+
+    function aggregateRows(){
+      const map = {};
+      getFilteredBaseRows().forEach(r => {
+        const name = r.name || 'Unknown Technician';
+        const market = r.market || 'Unknown Market';
+        const k = `${name}||${market}`;
+        if(!map[k]) map[k] = {name, market, total_revenue:0, booked_revenue:0, total_repairs:0, completed_jobs_w_invoice:0, service_call_count:0, completed_jobs:0, days_worked:0};
+        map[k].total_revenue += toNum(r.total_revenue);
+        map[k].booked_revenue += toNum(r.booked_revenue);
+        map[k].total_repairs += toNum(r.total_repairs);
+        map[k].completed_jobs_w_invoice += toNum(r.completed_jobs_w_invoice);
+        map[k].service_call_count += toNum(r.service_call_count);
+        map[k].completed_jobs += toNum(r.completed_jobs);
+        map[k].days_worked += toNum(r.days_worked);
+      });
+
+      return Object.values(map).map(r => ({
+        ...r,
+        avg_ticket: r.completed_jobs_w_invoice ? r.total_revenue / r.completed_jobs_w_invoice : null,
+        jobs_per_day: r.days_worked ? r.completed_jobs / r.days_worked : null,
+        aov_completion_rate: r.booked_revenue ? r.total_revenue / r.booked_revenue : null,
+        repairs_per_job: r.completed_jobs_w_invoice ? r.total_repairs / r.completed_jobs_w_invoice : null,
+        service_call_pct: r.completed_jobs ? r.service_call_count / r.completed_jobs : null
+      })).filter(r => r.completed_jobs > 0 || r.days_worked > 0 || r.total_revenue > 0);
+    }
+
+    function rankedRows(){
+      return aggregateRows().sort((a,b) => {
+        const av = a[state.sortKey];
+        const bv = b[state.sortKey];
+        const an = av == null ? (state.sortDir === 'asc' ? 999999999 : -999999999) : Number(av);
+        const bn = bv == null ? (state.sortDir === 'asc' ? 999999999 : -999999999) : Number(bv);
+        return state.sortDir === 'desc' ? bn - an : an - bn;
+      }).map((r,i) => ({...r, rank:i+1}));
+    }
+
+    function avg(values){
+      const clean = values.filter(v => v != null && Number.isFinite(Number(v)));
+      return clean.length ? clean.reduce((s,v)=>s+Number(v),0)/clean.length : null;
+    }
+
+    function getPriorMonthKey(monthKey){
+      const d = new Date(monthKey + 'T00:00:00');
+      d.setMonth(d.getMonth() - 1);
+      return d.toISOString().slice(0,7) + '-01';
+    }
+
+    function currentMonthKey(){
+      if(state.grain === 'month') return state.period;
+      const row = state.rawData.find(r => normDate(r[grainField()]) === state.period);
+      return row ? normDate(row.month) : '';
+    }
+
+    function getMtdRevenueComparison(){
+      const month = currentMonthKey();
+      if(!month) return null;
+      const currentRows = getFilteredBaseRows('month', month);
+      const days = currentRows.map(r => normDate(r.day)).filter(Boolean).sort();
+      if(!days.length) return null;
+      const latestDay = days[days.length - 1];
+      const latestDom = Number(latestDay.slice(8,10));
+      const priorMonth = getPriorMonthKey(month);
+      const current = currentRows.filter(r => normDate(r.day) <= latestDay).reduce((s,r)=>s+toNum(r.total_revenue),0);
+      const prior = getFilteredBaseRows('month', priorMonth)
+        .filter(r => {
+          const d = normDate(r.day);
+          return d && Number(d.slice(8,10)) <= latestDom;
+        })
+        .reduce((s,r)=>s+toNum(r.total_revenue),0);
+      const delta = current - prior;
+      const deltaPct = prior ? delta / prior : null;
+      return {current, prior, delta, deltaPct, latestDay};
+    }
+
+    function deltaClass(v){ if(v == null) return 'neutral'; return v >= 0 ? 'good' : 'bad'; }
+    function formatDeltaPct(v){ if(v == null || !Number.isFinite(Number(v))) return '–'; return (v > 0 ? '+' : '') + (v*100).toFixed(1) + '%'; }
+
+    function renderHeader(rows){
+      const parts = [
+        'NuBrakes',
+        state.market,
+        formatPeriodLabel(state.period),
+        rows.length + ' technicians'
+      ];
+      el('subtitle').textContent = parts.join(' · ');
+      el('dataBadge').className = state.fallback ? 'badge sample' : 'badge live';
+      el('dataBadgeText').textContent = state.fallback ? 'Sample Data' : 'Live Data';
+      el('fallbackNote').classList.toggle('hidden', !state.fallback);
+    }
+
+    function renderKpis(rows){
+      const totalRev = rows.reduce((s,r)=>s+toNum(r.total_revenue),0);
+      const completed = rows.reduce((s,r)=>s+toNum(r.completed_jobs),0);
+      const completedWithInvoice = rows.reduce((s,r)=>s+toNum(r.completed_jobs_w_invoice),0);
+      const avgTicket = completedWithInvoice ? totalRev / completedWithInvoice : 0;
+      const avgJpd = avg(rows.map(r => r.jobs_per_day));
+      const avgAov = avg(rows.map(r => r.aov_completion_rate));
+      const mtd = getMtdRevenueComparison();
+
+      const cards = [
+        {label:'Technicians', value:rows.length.toLocaleString(), sub:'Active in selected period'},
+        {label:state.grain === 'month' ? 'Selected Month Revenue' : 'Selected Period Revenue', value:fmtFull$(totalRev), sub:completed.toLocaleString() + ' completed jobs'},
+        {label:'MTD Revenue', value:mtd ? fmtFull$(mtd.current) : '–', sub:mtd ? 'Through ' + new Date(mtd.latestDay+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) : 'No daily data'},
+        {label:'MTD vs Prior', value:mtd ? formatDeltaPct(mtd.deltaPct) : '–', sub:mtd ? fmtFull$(mtd.prior) + ' prior MTD' : 'No prior data', cls:mtd ? deltaClass(mtd.deltaPct) : ''},
+        {label:'Avg Ticket', value:fmt$(avgTicket), sub:'Revenue / invoiced jobs'},
+        {label:'Avg Jobs/Day', value:fmtN(avgJpd,1), sub:'Completed jobs / days worked'}
+      ];
+
+      const html = cards.map(c => `
+        <div class="card tight">
+          <div class="section-label">${escapeHtml(c.label)}</div>
+          <div class="metric-value ${c.cls || ''}" style="${c.cls==='good'?'color:var(--green);':c.cls==='bad'?'color:var(--red);':''}">${escapeHtml(c.value)}</div>
+          <div class="small-muted">${escapeHtml(c.sub)}</div>
+        </div>
+      `).join('');
+
+      el('kpiGrid').innerHTML = html;
+      el('revenueKpiGrid').innerHTML = html;
+    }
+
+    function rankClass(rank){ return rank===1 ? 'top1' : rank===2 ? 'top2' : rank===3 ? 'top3' : ''; }
+    function rankLabel(rank){ return rank===1 ? '🥇' : rank===2 ? '🥈' : rank===3 ? '🥉' : '#' + rank; }
+    function perfClassMetric(key, v){
+      if(v == null) return '';
+      if(key === 'jobs_per_day') return v >= 3.5 ? 'good' : v <= 2 ? 'bad' : '';
+      if(key === 'aov_completion_rate') return v >= 0.9 ? 'good' : v >= 0.75 ? 'warn' : 'bad';
+      if(key === 'service_call_pct') return v <= 0.15 ? 'good' : v >= 0.30 ? 'bad' : 'warn';
+      return '';
+    }
+
+    function renderLeaderboard(rows){
+      if(!rows.length){
+        el('leaderboard').innerHTML = `<div class="card"><div class="section-label">No Results</div><div class="small-muted">No technicians found for this selection.</div></div>`;
+        el('revenueRows').innerHTML = `<tr><td colspan="8">No technicians found for this selection.</td></tr>`;
+        return;
+      }
+
+      el('leaderboard').innerHTML = rows.map(r => `
+        <div class="tech-card">
+          <div class="tech-head">
+            <div style="min-width:0;">
+              <div class="tech-name-row">
+                <span class="rank-chip ${rankClass(r.rank)}">${rankLabel(r.rank)}</span>
+                <div class="tech-name">${escapeHtml(r.name)}</div>
+              </div>
+              <div class="tech-market">${escapeHtml(r.market)}</div>
+            </div>
+            <div class="tech-rev">
+              <div class="value">${fmt$(r.total_revenue)}</div>
+              <div class="label">Revenue</div>
+            </div>
+          </div>
+          <div class="mini-grid">
+            ${[
+              ['Avg Ticket', fmt$(r.avg_ticket), ''],
+              ['Jobs/Day', r.jobs_per_day == null ? '–' : fmtN(r.jobs_per_day,1), perfClassMetric('jobs_per_day', r.jobs_per_day)],
+              ['AOV Cmpl', r.aov_completion_rate == null ? '–' : fmtPct(r.aov_completion_rate), perfClassMetric('aov_completion_rate', r.aov_completion_rate)],
+              ['Repairs/Job', r.repairs_per_job == null ? '–' : fmtN(r.repairs_per_job,1), ''],
+              ['Service Call %', r.service_call_pct == null ? '–' : fmtPct(r.service_call_pct), perfClassMetric('service_call_pct', r.service_call_pct)],
+              ['Tech Efficiency', '', '']
+            ].map(([label,value,cls]) => `
+              <div class="mini-cell">
+                <div class="mini-label">${label}</div>
+                <div class="mini-value ${cls}">${value}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      el('revenueRows').innerHTML = rows.map(r => `
+        <tr>
+          <td><span class="rank-chip ${rankClass(r.rank)}">${rankLabel(r.rank)}</span></td>
+          <td>${escapeHtml(r.name)}</td>
+          <td>${escapeHtml(r.market)}</td>
+          <td>${fmtFull$(r.total_revenue)}</td>
+          <td>${fmtFull$(r.total_revenue)}</td>
+          <td>${fmt$(r.avg_ticket)}</td>
+          <td>–</td>
+          <td>${r.jobs_per_day == null ? '–' : fmtN(r.jobs_per_day,1)}</td>
+          <td>${r.service_call_pct == null ? '–' : fmtPct(r.service_call_pct)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderWeeklyPanel(){
+      const panel = el('weeklyPanel');
+      const month = currentMonthKey();
+
+      if(!month){
+        panel.innerHTML = `
+          <div class="card">
+            <div class="section-label">Week-by-Week Coaching View</div>
+            <div class="small-muted">No month selected.</div>
+          </div>
+        `;
+        return;
+      }
+
+      let baseRowsAll = getFilteredBaseRows('month', month);
+      const techOptions = [...new Set(baseRowsAll.map(r => r.name).filter(Boolean))].sort();
+
+      if(state.coachingTech !== 'All Technicians' && !techOptions.includes(state.coachingTech)){
+        state.coachingTech = 'All Technicians';
+      }
+
+      let baseRows = [...baseRowsAll];
+      if(state.coachingTech !== 'All Technicians'){
+        baseRows = baseRows.filter(r => r.name === state.coachingTech);
+      }
+
+      const byWeek = {};
+
+      baseRows.forEach(r => {
+        const week = normDate(r.week) || 'Unknown';
+
+        if(!byWeek[week]){
+          byWeek[week] = {
+            week,
+            total_revenue:0,
+            booked_revenue:0,
+            completed_jobs:0,
+            completed_jobs_w_invoice:0,
+            total_repairs:0,
+            service_call_count:0,
+            days_worked:0
+          };
+        }
+
+        byWeek[week].total_revenue += toNum(r.total_revenue);
+        byWeek[week].booked_revenue += toNum(r.booked_revenue);
+        byWeek[week].completed_jobs += toNum(r.completed_jobs);
+        byWeek[week].completed_jobs_w_invoice += toNum(r.completed_jobs_w_invoice);
+        byWeek[week].total_repairs += toNum(r.total_repairs);
+        byWeek[week].service_call_count += toNum(r.service_call_count);
+        byWeek[week].days_worked += toNum(r.days_worked);
+      });
+
+      const weeks = Object.values(byWeek)
+        .sort((a,b) => String(a.week).localeCompare(String(b.week)))
+        .map((w,i,arr) => {
+          const prev = arr[i-1];
+          const delta = prev && prev.total_revenue ? (w.total_revenue - prev.total_revenue) / prev.total_revenue : null;
+
+          return {
+            ...w,
+            avg_ticket: w.completed_jobs_w_invoice ? w.total_revenue / w.completed_jobs_w_invoice : null,
+            jobs_per_day: w.days_worked ? w.completed_jobs / w.days_worked : null,
+            aov_completion_rate: w.booked_revenue ? w.total_revenue / w.booked_revenue : null,
+            repairs_per_job: w.completed_jobs_w_invoice ? w.total_repairs / w.completed_jobs_w_invoice : null,
+            service_call_pct: w.completed_jobs ? w.service_call_count / w.completed_jobs : null,
+            delta
+          };
+        });
+
+      const mtd = getMtdRevenueComparison();
+      const selectedLabel = state.coachingTech === 'All Technicians' ? 'All Technicians' : state.coachingTech;
+
+      panel.innerHTML = `
+        <div class="card" style="margin-bottom:16px;">
+          <div class="metric-row" style="align-items:flex-start;margin-bottom:14px;">
+            <div>
+              <div class="section-label">Week-by-Week Coaching View</div>
+              <div class="small-muted">Currently viewing: ${escapeHtml(selectedLabel)} · Use the filter below for 1:1 coaching conversations.</div>
+            </div>
+            ${mtd ? `<span class="delta-chip ${deltaClass(mtd.deltaPct)}">MTD vs Prior ${formatDeltaPct(mtd.deltaPct)}</span>` : ''}
+          </div>
+
+          <div class="controls" style="margin-bottom:14px;">
+            <select id="coachingTechSelect" class="select">
+              ${['All Technicians', ...techOptions].map(t => `
+                <option value="${escapeHtml(t)}" ${t === state.coachingTech ? 'selected' : ''}>${escapeHtml(t)}</option>
+              `).join('')}
+            </select>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Week</th>
+                  <th>Revenue</th>
+                  <th>WoW Rev</th>
+                  <th>Tech Efficiency</th>
+                  <th>Avg Ticket</th>
+                  <th>Jobs/Day</th>
+                  <th>AOV Cmpl</th>
+                  <th>Repairs/Job</th>
+                  <th>Service Call %</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${weeks.length ? weeks.map(w => `
+                  <tr>
+                    <td>${formatWeekLabel(w.week)}</td>
+                    <td>${fmtFull$(w.total_revenue)}</td>
+                    <td><span class="delta-chip ${deltaClass(w.delta)}">${formatDeltaPct(w.delta)}</span></td>
+                    <td>${w.completed_jobs}</td>
+                    <td>${w.avg_ticket == null ? '–' : fmt$(w.avg_ticket)}</td>
+                    <td>${w.jobs_per_day == null ? '–' : fmtN(w.jobs_per_day,1)}</td>
+                    <td>${w.aov_completion_rate == null ? '–' : fmtPct(w.aov_completion_rate)}</td>
+                    <td>${w.repairs_per_job == null ? '–' : fmtN(w.repairs_per_job,1)}</td>
+                    <td>${w.service_call_pct == null ? '–' : fmtPct(w.service_call_pct)}</td>
+                  </tr>
+                `).join('') : `
+                  <tr>
+                    <td colspan="9">No weekly data found for this selection.</td>
+                  </tr>
+                `}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      const coachingSelect = el('coachingTechSelect');
+      if(coachingSelect){
+        coachingSelect.addEventListener('change', e => {
+          state.coachingTech = e.target.value;
+          renderWeeklyPanel();
+        });
+      }
+    }
+
+    function bindEvents(){
+      document.querySelectorAll('.period-btn').forEach(btn => btn.addEventListener('click', () => {
+        state.grain = btn.dataset.grain;
+        state.period = '';
+        render();
+      }));
+      el('periodSelect').addEventListener('change', e => { state.period = e.target.value; render(); });
+      el('marketSelect').addEventListener('change', e => { state.market = e.target.value; render(); });
+      el('searchInput').addEventListener('input', e => { state.search = e.target.value.trim().toLowerCase(); render(); });
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => { state.tab = btn.dataset.tab; render(); }));
+      el('sortToolbar').addEventListener('click', e => {
+        const btn = e.target.closest('[data-sort]');
+        if(!btn) return;
+        const key = btn.dataset.sort;
+        if(state.sortKey === key) state.sortDir = state.sortDir === 'desc' ? 'asc' : 'desc';
+        else { state.sortKey = key; state.sortDir = 'desc'; }
+        render();
+      });
+    }
+
+    function render(){
+      renderControls();
+      const rows = rankedRows();
+      renderHeader(rows);
+      renderKpis(rows);
+      renderLeaderboard(rows);
+      renderWeeklyPanel();
+    }
+
+    async function init(){
+      bindEvents();
+      try {
+        state.rawData = await loadData();
+        state.fallback = false;
+      } catch(err){
+        console.error('Technician data load failed. Using fallback sample data.', err);
+        state.rawData = FALLBACK;
+        state.fallback = true;
+      }
+      el('loading').classList.add('hidden');
+      el('app').classList.remove('hidden');
+      render();
+    }
+
+    window.addEventListener('error', function(event){
+      console.error('Global dashboard error:', event.error || event.message);
+      el('loading')?.classList.add('hidden');
+      el('app')?.classList.remove('hidden');
+    });
+
+    init();
+  </script>
 </body>
 </html>
