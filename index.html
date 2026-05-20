@@ -27,6 +27,7 @@
     }
 
     * { box-sizing: border-box; }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -35,13 +36,27 @@
       background: var(--bg);
       color: var(--text);
     }
+
     button, input, select { font: inherit; }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .app { min-height: 100vh; padding: 20px 16px; }
-    .container { max-width: 1240px; margin: 0 auto; }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
-    .header { margin-bottom: 20px; }
+    .app {
+      min-height: 100vh;
+      padding: 20px 16px;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 20px;
+    }
+
     .brand-row {
       display:flex;
       flex-direction:column;
@@ -71,9 +86,21 @@
       display:block;
     }
 
-    .title-wrap { min-width:220px; }
-    .title { margin: 0; font-size: 20px; font-weight: 700; }
-    .subtitle { margin: 3px 0 0; font-size: 12px; color: var(--muted); }
+    .title-wrap {
+      min-width:220px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin: 3px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
 
     .status-row {
       display:flex;
@@ -93,11 +120,33 @@
       font-size:11px;
       font-weight:600;
     }
-    .badge-dot { width:6px; height:6px; border-radius:999px; flex:0 0 auto; }
-    .badge.live { background:#ecfdf5; border-color:#6ee7b7; color:#065f46; }
-    .badge.live .badge-dot { background:#10b981; }
-    .badge.sample { background:#fff7ed; border-color:#fed7aa; color:#c2410c; }
-    .badge.sample .badge-dot { background:#f97316; }
+
+    .badge-dot {
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      flex:0 0 auto;
+    }
+
+    .badge.live {
+      background:#ecfdf5;
+      border-color:#6ee7b7;
+      color:#065f46;
+    }
+
+    .badge.live .badge-dot {
+      background:#10b981;
+    }
+
+    .badge.sample {
+      background:#fff7ed;
+      border-color:#fed7aa;
+      color:#c2410c;
+    }
+
+    .badge.sample .badge-dot {
+      background:#f97316;
+    }
 
     .controls {
       display:flex;
@@ -118,9 +167,15 @@
       color:var(--muted);
       box-shadow:0 1px 3px rgba(0,0,0,0.08);
     }
-    .period-btn.active { background:var(--dark); color:#fff; box-shadow:none; }
 
-    .select, .search-input {
+    .period-btn.active {
+      background:var(--dark);
+      color:#fff;
+      box-shadow:none;
+    }
+
+    .select,
+    .search-input {
       padding:9px 12px;
       border-radius:8px;
       border:1.5px solid var(--border);
@@ -131,8 +186,14 @@
       max-width:100%;
       outline:none;
     }
-    .select { cursor:pointer; }
-    .search-input { min-width:220px; }
+
+    .select {
+      cursor:pointer;
+    }
+
+    .search-input {
+      min-width:220px;
+    }
 
     .tabs {
       display:flex;
@@ -140,6 +201,7 @@
       border-bottom:1.5px solid var(--border);
       overflow-x:auto;
     }
+
     .tab-btn {
       padding:8px 20px;
       border:none;
@@ -152,7 +214,11 @@
       margin-bottom:-1.5px;
       white-space:nowrap;
     }
-    .tab-btn.active { color:var(--text); border-bottom-color:var(--text); }
+
+    .tab-btn.active {
+      color:var(--text);
+      border-bottom-color:var(--text);
+    }
 
     .card {
       background:var(--card);
@@ -161,7 +227,10 @@
       box-shadow:var(--shadow);
       border:1px solid var(--border-soft);
     }
-    .card.tight { padding:14px 16px; }
+
+    .card.tight {
+      padding:14px 16px;
+    }
 
     .section-grid {
       display:grid;
@@ -200,12 +269,32 @@
       border-radius:20px;
       white-space:nowrap;
     }
-    .delta-chip.good { color:var(--green); background:#ecfdf5; }
-    .delta-chip.bad { color:var(--red); background:#fff1f2; }
-    .delta-chip.neutral { color:var(--muted); background:#f3f4f6; }
 
-    .small-muted { font-size:10px; color:var(--soft); }
-    .small-strong { font-size:12px; font-weight:700; color:var(--muted); }
+    .delta-chip.good {
+      color:var(--green);
+      background:#ecfdf5;
+    }
+
+    .delta-chip.bad {
+      color:var(--red);
+      background:#fff1f2;
+    }
+
+    .delta-chip.neutral {
+      color:var(--muted);
+      background:#f3f4f6;
+    }
+
+    .small-muted {
+      font-size:10px;
+      color:var(--soft);
+    }
+
+    .small-strong {
+      font-size:12px;
+      font-weight:700;
+      color:var(--muted);
+    }
 
     .toolbar {
       display:flex;
@@ -216,7 +305,11 @@
       flex-wrap:wrap;
     }
 
-    .pill-group { display:flex; gap:8px; flex-wrap:wrap; }
+    .pill-group {
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
 
     .metric-pill {
       padding:5px 13px;
@@ -228,17 +321,32 @@
       color:var(--muted);
       border:1.5px solid var(--border);
     }
-    .metric-pill.active { border-color:var(--dark); background:var(--dark); color:#fff; }
 
-    .table-wrap { overflow-x:auto; }
-    table { width:100%; border-collapse:collapse; min-width:720px; }
-    th, td {
+    .metric-pill.active {
+      border-color:var(--dark);
+      background:var(--dark);
+      color:#fff;
+    }
+
+    .table-wrap {
+      overflow-x:auto;
+    }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+      min-width:720px;
+    }
+
+    th,
+    td {
       padding:10px 12px;
       border-bottom:1px solid var(--border);
       text-align:left;
       font-size:12px;
       white-space:nowrap;
     }
+
     th {
       background:#f8fafc;
       color:var(--soft);
@@ -247,8 +355,15 @@
       font-size:10px;
       font-weight:800;
     }
-    td { color:var(--text); font-weight:600; }
-    tr:last-child td { border-bottom:none; }
+
+    td {
+      color:var(--text);
+      font-weight:600;
+    }
+
+    tr:last-child td {
+      border-bottom:none;
+    }
 
     .rank-chip {
       display:inline-flex;
@@ -262,9 +377,21 @@
       font-weight:800;
       color:var(--muted);
     }
-    .rank-chip.top1 { background:#fef9c3; color:#854d0e; }
-    .rank-chip.top2 { background:#f1f5f9; color:#334155; }
-    .rank-chip.top3 { background:#fdf3e7; color:#92400e; }
+
+    .rank-chip.top1 {
+      background:#fef9c3;
+      color:#854d0e;
+    }
+
+    .rank-chip.top2 {
+      background:#f1f5f9;
+      color:#334155;
+    }
+
+    .rank-chip.top3 {
+      background:#fdf3e7;
+      color:#92400e;
+    }
 
     .tech-grid {
       display:grid;
@@ -290,29 +417,92 @@
       border-bottom:1px solid var(--border-soft);
     }
 
-    .tech-name-row { display:flex; align-items:center; gap:8px; min-width:0; }
-    .tech-name { font-size:14px; font-weight:800; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .tech-market { margin-top:4px; font-size:11px; color:var(--muted); font-weight:600; }
-    .tech-rev { text-align:right; flex-shrink:0; }
-    .tech-rev .value { font-size:18px; font-weight:800; color:var(--text); }
-    .tech-rev .label { font-size:10px; color:var(--soft); text-transform:uppercase; letter-spacing:0.05em; }
+    .tech-name-row {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
+    }
+
+    .tech-name {
+      font-size:14px;
+      font-weight:800;
+      color:var(--text);
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .tech-market {
+      margin-top:4px;
+      font-size:11px;
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    .tech-rev {
+      text-align:right;
+      flex-shrink:0;
+    }
+
+    .tech-rev .value {
+      font-size:18px;
+      font-weight:800;
+      color:var(--text);
+    }
+
+    .tech-rev .label {
+      font-size:10px;
+      color:var(--soft);
+      text-transform:uppercase;
+      letter-spacing:0.05em;
+    }
 
     .mini-grid {
       display:grid;
       grid-template-columns:repeat(2, minmax(0, 1fr));
     }
+
     .mini-cell {
       padding:10px 12px;
       border-right:1px solid var(--border-soft);
       border-bottom:1px solid var(--border-soft);
     }
-    .mini-cell:nth-child(2n) { border-right:none; }
-    .mini-cell:nth-last-child(-n+2) { border-bottom:none; }
-    .mini-label { font-size:10px; color:var(--soft); text-transform:uppercase; letter-spacing:0.04em; font-weight:700; }
-    .mini-value { margin-top:3px; font-size:14px; color:var(--text); font-weight:800; }
-    .mini-value.good { color:var(--green); }
-    .mini-value.bad { color:var(--red); }
-    .mini-value.warn { color:var(--amber); }
+
+    .mini-cell:nth-child(2n) {
+      border-right:none;
+    }
+
+    .mini-cell:nth-last-child(-n+2) {
+      border-bottom:none;
+    }
+
+    .mini-label {
+      font-size:10px;
+      color:var(--soft);
+      text-transform:uppercase;
+      letter-spacing:0.04em;
+      font-weight:700;
+    }
+
+    .mini-value {
+      margin-top:3px;
+      font-size:14px;
+      color:var(--text);
+      font-weight:800;
+    }
+
+    .mini-value.good {
+      color:var(--green);
+    }
+
+    .mini-value.bad {
+      color:var(--red);
+    }
+
+    .mini-value.warn {
+      color:var(--amber);
+    }
 
     .loading {
       display:flex;
@@ -333,18 +523,50 @@
       animation:spin 1s linear infinite;
     }
 
-    .hidden { display:none !important; }
+    .hidden {
+      display:none !important;
+    }
 
     @media (max-width: 639px) {
-      .app { padding:12px; }
-      .brand-row { align-items:flex-start; }
-      .logo-card { width:210px; height:38px; }
-      .title { font-size:18px; }
-      .controls { align-items:stretch; }
-      .select, .search-input { min-width:100%; width:100%; }
-      .section-grid { grid-template-columns:1fr; }
-      .tech-grid { grid-template-columns:1fr; }
-      .toolbar { flex-direction:column; align-items:stretch; }
+      .app {
+        padding:12px;
+      }
+
+      .brand-row {
+        align-items:flex-start;
+      }
+
+      .logo-card {
+        width:210px;
+        height:38px;
+      }
+
+      .title {
+        font-size:18px;
+      }
+
+      .controls {
+        align-items:stretch;
+      }
+
+      .select,
+      .search-input {
+        min-width:100%;
+        width:100%;
+      }
+
+      .section-grid {
+        grid-template-columns:1fr;
+      }
+
+      .tech-grid {
+        grid-template-columns:1fr;
+      }
+
+      .toolbar {
+        flex-direction:column;
+        align-items:stretch;
+      }
     }
   </style>
 </head>
@@ -365,9 +587,11 @@
               alt="NuBrakes logo"
             />
           </div>
+
           <div class="title-wrap">
             <h1 class="title">NuBrakes Technician Leaderboard</h1>
             <p id="subtitle" class="subtitle"></p>
+
             <div class="status-row">
               <div id="dataBadge" class="badge live">
                 <div class="badge-dot"></div>
@@ -400,12 +624,14 @@
 
         <div class="toolbar">
           <div class="section-label" style="margin-bottom:0;">Technician Leaderboard</div>
+
           <div id="sortToolbar" class="pill-group">
             <button class="metric-pill active" data-sort="total_revenue">Revenue ↓</button>
             <button class="metric-pill" data-sort="avg_ticket">Avg Ticket</button>
             <button class="metric-pill" data-sort="jobs_per_day">Jobs/Day</button>
             <button class="metric-pill" data-sort="repairs_per_job">Repairs/Job</button>
             <button class="metric-pill" data-sort="aov_completion_rate">AOV Cmpl</button>
+            <button class="metric-pill" data-sort="tech_efficiency">Tech Eff</button>
           </div>
         </div>
 
@@ -414,6 +640,7 @@
 
       <div id="revenueTab" class="hidden">
         <div id="revenueKpiGrid" class="section-grid"></div>
+
         <div class="card">
           <div class="section-label">Revenue Leaderboard</div>
 
@@ -461,17 +688,166 @@
     };
 
     const FALLBACK = [
-      {day:"2026-03-18 00:00:00",week:"2026-03-12 00:00:00",month:"2026-03-01 00:00:00",market:"Atlanta",name:"Dominique Simpson",isactive:true,total_revenue:3193.11,booked_revenue:2301.7,avg_ticket:638.622,jobs_per_day:5,aov_completion_rate:91.5,total_repairs:10,completed_jobs_w_invoice:5,repairs_per_job:2,completed_jobs:5,days_worked:1},
-      {day:"2026-03-18 00:00:00",week:"2026-03-12 00:00:00",month:"2026-03-01 00:00:00",market:"Nashville",name:"Kemper Stanley",isactive:true,total_revenue:2840.5,booked_revenue:2100,avg_ticket:710.125,jobs_per_day:4,aov_completion_rate:93.2,total_repairs:8,completed_jobs_w_invoice:4,repairs_per_job:2,completed_jobs:4,days_worked:1},
-      {day:"2026-03-18 00:00:00",week:"2026-03-12 00:00:00",month:"2026-03-01 00:00:00",market:"Miami",name:"Maui Cruz",isactive:true,total_revenue:1820.4,booked_revenue:1600,avg_ticket:455.1,jobs_per_day:4,aov_completion_rate:88,total_repairs:7,completed_jobs_w_invoice:4,repairs_per_job:1.75,completed_jobs:4,days_worked:1}
+      {
+        day:"2026-05-19",
+        week:"2026-05-14",
+        month:"2026-05-01",
+        market:"San Antonio",
+        name:"Joseph Gonzalez",
+        isactive:true,
+        total_revenue:1449.09,
+        booked_revenue:1944.46,
+        avg_ticket:483.03,
+        jobs_per_day:4,
+        aov_completion_rate:74.52403238,
+        total_repairs:5,
+        completed_jobs_w_invoice:3,
+        repairs_per_job:1.666666667,
+        service_call_count:0,
+        completed_jobs:4,
+        days_worked:1,
+        tech_efficiency:1.589403974,
+        total_appointment_duration_minutes:240,
+        total_normalized_actual_duration_minutes:151
+      },
+      {
+        day:"2026-05-19",
+        week:"2026-05-14",
+        month:"2026-05-01",
+        market:"Atlanta",
+        name:"Jay Johnson",
+        isactive:true,
+        total_revenue:2734.59,
+        booked_revenue:2871.45,
+        avg_ticket:546.918,
+        jobs_per_day:6,
+        aov_completion_rate:95.23376691,
+        total_repairs:11,
+        completed_jobs_w_invoice:5,
+        repairs_per_job:2.2,
+        service_call_count:1,
+        completed_jobs:6,
+        days_worked:1,
+        tech_efficiency:2.057142857,
+        total_appointment_duration_minutes:360,
+        total_normalized_actual_duration_minutes:175
+      },
+      {
+        day:"2026-05-19",
+        week:"2026-05-14",
+        month:"2026-05-01",
+        market:"Houston",
+        name:"Edgar Khachaturyan",
+        isactive:true,
+        total_revenue:2723.92,
+        booked_revenue:2007.72,
+        avg_ticket:544.784,
+        jobs_per_day:5,
+        aov_completion_rate:135.6723049,
+        total_repairs:11,
+        completed_jobs_w_invoice:5,
+        repairs_per_job:2.2,
+        service_call_count:0,
+        completed_jobs:5,
+        days_worked:1,
+        tech_efficiency:3.06122449,
+        total_appointment_duration_minutes:300,
+        total_normalized_actual_duration_minutes:98
+      },
+      {
+        day:"2026-05-19",
+        week:"2026-05-14",
+        month:"2026-05-01",
+        market:"Atlanta",
+        name:"Dominique Simpson",
+        isactive:true,
+        total_revenue:910.76,
+        booked_revenue:703.09,
+        avg_ticket:303.5866667,
+        jobs_per_day:5,
+        aov_completion_rate:129.5367592,
+        total_repairs:4,
+        completed_jobs_w_invoice:3,
+        repairs_per_job:1.333333333,
+        service_call_count:0,
+        completed_jobs:5,
+        days_worked:1,
+        tech_efficiency:1.351351351,
+        total_appointment_duration_minutes:300,
+        total_normalized_actual_duration_minutes:222
+      },
+      {
+        day:"2026-05-19",
+        week:"2026-05-14",
+        month:"2026-05-01",
+        market:"Nashville",
+        name:"Clint Hyde",
+        isactive:true,
+        total_revenue:514.09,
+        booked_revenue:774.28,
+        avg_ticket:514.09,
+        jobs_per_day:4,
+        aov_completion_rate:66.39587746,
+        total_repairs:5,
+        completed_jobs_w_invoice:1,
+        repairs_per_job:5,
+        service_call_count:0,
+        completed_jobs:4,
+        days_worked:1,
+        tech_efficiency:0.8219178082,
+        total_appointment_duration_minutes:240,
+        total_normalized_actual_duration_minutes:292
+      },
+      {
+        day:"2026-05-19",
+        week:"2026-05-14",
+        month:"2026-05-01",
+        market:"Nashville",
+        name:"Mike Nethken",
+        isactive:true,
+        total_revenue:1751.12,
+        booked_revenue:1229.86,
+        avg_ticket:350.224,
+        jobs_per_day:5,
+        aov_completion_rate:142.3836859,
+        total_repairs:9,
+        completed_jobs_w_invoice:5,
+        repairs_per_job:1.8,
+        service_call_count:0,
+        completed_jobs:5,
+        days_worked:1,
+        tech_efficiency:1.648351648,
+        total_appointment_duration_minutes:300,
+        total_normalized_actual_duration_minutes:182
+      }
     ];
 
-    function el(id){ return document.getElementById(id); }
-    function normDate(v){ return v ? String(v).slice(0,10) : ""; }
-    function toNum(v){ const n = Number(v); return Number.isFinite(n) ? n : 0; }
-    function escapeHtml(str){ return String(str ?? "").replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
+    function el(id){
+      return document.getElementById(id);
+    }
 
-    function grainField(){ return state.grain === "day" ? "day" : state.grain === "week" ? "week" : "month"; }
+    function normDate(v){
+      return v ? String(v).slice(0,10) : "";
+    }
+
+    function toNum(v){
+      const n = Number(v);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function escapeHtml(str){
+      return String(str ?? "").replace(/[&<>"']/g, s => ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;'
+      }[s]));
+    }
+
+    function grainField(){
+      return state.grain === "day" ? "day" : state.grain === "week" ? "week" : "month";
+    }
 
     function fmt$(v){
       if(v == null || v === "") return "–";
@@ -481,57 +857,144 @@
       return "$" + n.toFixed(0);
     }
 
-    function fmtFull$(v){ return "$" + Math.round(Number(v)||0).toLocaleString(); }
-    function fmtN(v,d=1){ return v == null || !Number.isFinite(Number(v)) ? "–" : Number(v).toFixed(d); }
-    function fmtPct(v){ return v == null || !Number.isFinite(Number(v)) ? "–" : (Number(v)*100).toFixed(1) + "%"; }
+    function fmtFull$(v){
+      return "$" + Math.round(Number(v)||0).toLocaleString();
+    }
+
+    function fmtN(v,d=1){
+      return v == null || !Number.isFinite(Number(v)) ? "–" : Number(v).toFixed(d);
+    }
+
+    function fmtPct(v){
+      if(v == null || !Number.isFinite(Number(v))) return "–";
+
+      const n = Number(v);
+
+      // Supports both decimal format 0.95 and percent format 95.
+      const pct = Math.abs(n) <= 2 ? n * 100 : n;
+
+      return pct.toFixed(1) + "%";
+    }
+
+    function fmtEff(v){
+      return v == null || !Number.isFinite(Number(v)) ? "–" : Number(v).toFixed(2) + "x";
+    }
 
     function formatPeriodLabel(val){
       if(!val) return "—";
+
       const d = new Date(val + "T00:00:00");
-      if(state.grain === "day") return d.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"});
-      if(state.grain === "week") return "Week of " + d.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"});
-      return d.toLocaleDateString("en-US", {month:"long", year:"numeric"});
+
+      if(state.grain === "day") {
+        return d.toLocaleDateString("en-US", {
+          month:"short",
+          day:"numeric",
+          year:"numeric"
+        });
+      }
+
+      if(state.grain === "week") {
+        return "Week of " + d.toLocaleDateString("en-US", {
+          month:"short",
+          day:"numeric",
+          year:"numeric"
+        });
+      }
+
+      return d.toLocaleDateString("en-US", {
+        month:"long",
+        year:"numeric"
+      });
     }
 
     function formatWeekLabel(val){
       if(!val) return "Unknown";
-      return new Date(val + "T00:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric"});
+
+      return new Date(val + "T00:00:00").toLocaleDateString("en-US", {
+        month:"short",
+        day:"numeric"
+      });
     }
 
     async function loadData(){
-      const r = await fetch(DATA_URL + "?t=" + Date.now(), {cache:"no-store"});
+      const r = await fetch(DATA_URL + "?t=" + Date.now(), {
+        cache:"no-store"
+      });
+
       if(!r.ok) throw new Error(r.status);
+
       const d = await r.json();
+
       if(!Array.isArray(d) || !d.length) throw new Error("empty");
+
       return d;
     }
 
     function getPeriodOptions(){
       const key = grainField();
-      return [...new Set(state.rawData.map(r => normDate(r[key])).filter(Boolean))].sort();
+
+      return [...new Set(
+        state.rawData
+          .map(r => normDate(r[key]))
+          .filter(Boolean)
+      )].sort();
     }
 
     function getMarketOptions(){
-      return [...new Set(state.rawData.map(r => r.market).filter(Boolean))].sort();
+      return [...new Set(
+        state.rawData
+          .map(r => r.market)
+          .filter(Boolean)
+      )].sort();
+    }
+
+    function sortLabel(k){
+      return {
+        total_revenue:'Revenue',
+        avg_ticket:'Avg Ticket',
+        jobs_per_day:'Jobs/Day',
+        repairs_per_job:'Repairs/Job',
+        aov_completion_rate:'AOV Cmpl',
+        tech_efficiency:'Tech Eff'
+      }[k] || k;
     }
 
     function renderControls(){
-      document.querySelectorAll('.period-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.grain === state.grain));
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === state.tab));
+      document.querySelectorAll('.period-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.grain === state.grain);
+      });
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === state.tab);
+      });
+
       el('overviewTab').classList.toggle('hidden', state.tab !== 'overview');
       el('revenueTab').classList.toggle('hidden', state.tab !== 'revenue');
       el('coachingTab').classList.toggle('hidden', state.tab !== 'coaching');
 
       const periodOpts = getPeriodOptions();
-      if(!state.period || !periodOpts.includes(state.period)) state.period = periodOpts[periodOpts.length - 1] || "";
-      el('periodSelect').innerHTML = periodOpts.map(p => `<option value="${p}" ${p===state.period?'selected':''}>${formatPeriodLabel(p)}</option>`).join('');
+
+      if(!state.period || !periodOpts.includes(state.period)) {
+        state.period = periodOpts[periodOpts.length - 1] || "";
+      }
+
+      el('periodSelect').innerHTML = periodOpts.map(p => `
+        <option value="${p}" ${p===state.period?'selected':''}>${formatPeriodLabel(p)}</option>
+      `).join('');
 
       const markets = getMarketOptions();
-      if(state.market !== 'All Markets' && !markets.includes(state.market)) state.market = 'All Markets';
-      el('marketSelect').innerHTML = ['All Markets', ...markets].map(m => `<option value="${escapeHtml(m)}" ${m===state.market?'selected':''}>${escapeHtml(m)}</option>`).join('');
+
+      if(state.market !== 'All Markets' && !markets.includes(state.market)) {
+        state.market = 'All Markets';
+      }
+
+      el('marketSelect').innerHTML = ['All Markets', ...markets].map(m => `
+        <option value="${escapeHtml(m)}" ${m===state.market?'selected':''}>${escapeHtml(m)}</option>
+      `).join('');
 
       document.querySelectorAll('.metric-pill').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.sort === state.sortKey);
+
         if(btn.dataset.sort === state.sortKey){
           btn.textContent = sortLabel(btn.dataset.sort) + (state.sortDir === 'desc' ? ' ↓' : ' ↑');
         } else {
@@ -540,30 +1003,43 @@
       });
     }
 
-    function sortLabel(k){
-      return {
-        total_revenue:'Revenue', avg_ticket:'Avg Ticket', jobs_per_day:'Jobs/Day', repairs_per_job:'Repairs/Job', aov_completion_rate:'AOV Cmpl'
-      }[k] || k;
-    }
-
     function getFilteredBaseRows(forceField=null, forcePeriod=null){
       const key = forceField || grainField();
       const period = forcePeriod || state.period;
+
       return state.rawData.filter(r => {
         const periodOk = normDate(r[key]) === period;
         const marketOk = state.market === 'All Markets' || r.market === state.market;
         const searchOk = !state.search || String(r.name || '').toLowerCase().includes(state.search);
+
         return periodOk && marketOk && searchOk;
       });
     }
 
     function aggregateRows(){
       const map = {};
+
       getFilteredBaseRows().forEach(r => {
         const name = r.name || 'Unknown Technician';
         const market = r.market || 'Unknown Market';
         const k = `${name}||${market}`;
-        if(!map[k]) map[k] = {name, market, total_revenue:0, booked_revenue:0, total_repairs:0, completed_jobs_w_invoice:0, service_call_count:0, completed_jobs:0, days_worked:0};
+
+        if(!map[k]) {
+          map[k] = {
+            name,
+            market,
+            total_revenue:0,
+            booked_revenue:0,
+            total_repairs:0,
+            completed_jobs_w_invoice:0,
+            service_call_count:0,
+            completed_jobs:0,
+            days_worked:0,
+            total_appointment_duration_minutes:0,
+            total_normalized_actual_duration_minutes:0
+          };
+        }
+
         map[k].total_revenue += toNum(r.total_revenue);
         map[k].booked_revenue += toNum(r.booked_revenue);
         map[k].total_repairs += toNum(r.total_repairs);
@@ -571,6 +1047,18 @@
         map[k].service_call_count += toNum(r.service_call_count);
         map[k].completed_jobs += toNum(r.completed_jobs);
         map[k].days_worked += toNum(r.days_worked);
+
+        const apptDuration = toNum(r.total_appointment_duration_minutes);
+        const actualDuration = toNum(r.total_normalized_actual_duration_minutes);
+
+        // Important:
+        // Only include efficiency rows where actual duration exists.
+        // This prevents inflated Tech Efficiency when appointment duration exists
+        // but closed/actual duration is missing.
+        if(actualDuration > 0){
+          map[k].total_appointment_duration_minutes += apptDuration;
+          map[k].total_normalized_actual_duration_minutes += actualDuration;
+        }
       });
 
       return Object.values(map).map(r => ({
@@ -579,7 +1067,10 @@
         jobs_per_day: r.days_worked ? r.completed_jobs / r.days_worked : null,
         aov_completion_rate: r.booked_revenue ? r.total_revenue / r.booked_revenue : null,
         repairs_per_job: r.completed_jobs_w_invoice ? r.total_repairs / r.completed_jobs_w_invoice : null,
-        service_call_pct: r.completed_jobs ? r.service_call_count / r.completed_jobs : null
+        service_call_pct: r.completed_jobs ? r.service_call_count / r.completed_jobs : null,
+        tech_efficiency: r.total_normalized_actual_duration_minutes
+          ? r.total_appointment_duration_minutes / r.total_normalized_actual_duration_minutes
+          : null
       })).filter(r => r.completed_jobs > 0 || r.days_worked > 0 || r.total_revenue > 0);
     }
 
@@ -587,52 +1078,88 @@
       return aggregateRows().sort((a,b) => {
         const av = a[state.sortKey];
         const bv = b[state.sortKey];
+
         const an = av == null ? (state.sortDir === 'asc' ? 999999999 : -999999999) : Number(av);
         const bn = bv == null ? (state.sortDir === 'asc' ? 999999999 : -999999999) : Number(bv);
+
         return state.sortDir === 'desc' ? bn - an : an - bn;
-      }).map((r,i) => ({...r, rank:i+1}));
+      }).map((r,i) => ({
+        ...r,
+        rank:i+1
+      }));
     }
 
     function avg(values){
       const clean = values.filter(v => v != null && Number.isFinite(Number(v)));
-      return clean.length ? clean.reduce((s,v)=>s+Number(v),0)/clean.length : null;
+
+      return clean.length
+        ? clean.reduce((s,v)=>s+Number(v),0)/clean.length
+        : null;
     }
 
     function getPriorMonthKey(monthKey){
       const d = new Date(monthKey + 'T00:00:00');
       d.setMonth(d.getMonth() - 1);
+
       return d.toISOString().slice(0,7) + '-01';
     }
 
     function currentMonthKey(){
       if(state.grain === 'month') return state.period;
+
       const row = state.rawData.find(r => normDate(r[grainField()]) === state.period);
+
       return row ? normDate(row.month) : '';
     }
 
     function getMtdRevenueComparison(){
       const month = currentMonthKey();
+
       if(!month) return null;
+
       const currentRows = getFilteredBaseRows('month', month);
       const days = currentRows.map(r => normDate(r.day)).filter(Boolean).sort();
+
       if(!days.length) return null;
+
       const latestDay = days[days.length - 1];
       const latestDom = Number(latestDay.slice(8,10));
       const priorMonth = getPriorMonthKey(month);
-      const current = currentRows.filter(r => normDate(r.day) <= latestDay).reduce((s,r)=>s+toNum(r.total_revenue),0);
+
+      const current = currentRows
+        .filter(r => normDate(r.day) <= latestDay)
+        .reduce((s,r)=>s+toNum(r.total_revenue),0);
+
       const prior = getFilteredBaseRows('month', priorMonth)
         .filter(r => {
           const d = normDate(r.day);
           return d && Number(d.slice(8,10)) <= latestDom;
         })
         .reduce((s,r)=>s+toNum(r.total_revenue),0);
+
       const delta = current - prior;
       const deltaPct = prior ? delta / prior : null;
-      return {current, prior, delta, deltaPct, latestDay};
+
+      return {
+        current,
+        prior,
+        delta,
+        deltaPct,
+        latestDay
+      };
     }
 
-    function deltaClass(v){ if(v == null) return 'neutral'; return v >= 0 ? 'good' : 'bad'; }
-    function formatDeltaPct(v){ if(v == null || !Number.isFinite(Number(v))) return '–'; return (v > 0 ? '+' : '') + (v*100).toFixed(1) + '%'; }
+    function deltaClass(v){
+      if(v == null) return 'neutral';
+
+      return v >= 0 ? 'good' : 'bad';
+    }
+
+    function formatDeltaPct(v){
+      if(v == null || !Number.isFinite(Number(v))) return '–';
+
+      return (v > 0 ? '+' : '') + (v*100).toFixed(1) + '%';
+    }
 
     function renderHeader(rows){
       const parts = [
@@ -641,7 +1168,9 @@
         formatPeriodLabel(state.period),
         rows.length + ' technicians'
       ];
+
       el('subtitle').textContent = parts.join(' · ');
+
       el('dataBadge').className = state.fallback ? 'badge sample' : 'badge live';
       el('dataBadgeText').textContent = state.fallback ? 'Sample Data' : 'Live Data';
       el('fallbackNote').classList.toggle('hidden', !state.fallback);
@@ -651,24 +1180,68 @@
       const totalRev = rows.reduce((s,r)=>s+toNum(r.total_revenue),0);
       const completed = rows.reduce((s,r)=>s+toNum(r.completed_jobs),0);
       const completedWithInvoice = rows.reduce((s,r)=>s+toNum(r.completed_jobs_w_invoice),0);
+
       const avgTicket = completedWithInvoice ? totalRev / completedWithInvoice : 0;
       const avgJpd = avg(rows.map(r => r.jobs_per_day));
       const avgAov = avg(rows.map(r => r.aov_completion_rate));
+
+      const totalApptDuration = rows.reduce((s,r)=>s+toNum(r.total_appointment_duration_minutes),0);
+      const totalActualDuration = rows.reduce((s,r)=>s+toNum(r.total_normalized_actual_duration_minutes),0);
+      const avgTechEff = totalActualDuration ? totalApptDuration / totalActualDuration : null;
+
       const mtd = getMtdRevenueComparison();
 
       const cards = [
-        {label:'Technicians', value:rows.length.toLocaleString(), sub:'Active in selected period'},
-        {label:state.grain === 'month' ? 'Selected Month Revenue' : 'Selected Period Revenue', value:fmtFull$(totalRev), sub:completed.toLocaleString() + ' completed jobs'},
-        {label:'MTD Revenue', value:mtd ? fmtFull$(mtd.current) : '–', sub:mtd ? 'Through ' + new Date(mtd.latestDay+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) : 'No daily data'},
-        {label:'MTD vs Prior', value:mtd ? formatDeltaPct(mtd.deltaPct) : '–', sub:mtd ? fmtFull$(mtd.prior) + ' prior MTD' : 'No prior data', cls:mtd ? deltaClass(mtd.deltaPct) : ''},
-        {label:'Avg Ticket', value:fmt$(avgTicket), sub:'Revenue / invoiced jobs'},
-        {label:'Avg Jobs/Day', value:fmtN(avgJpd,1), sub:'Completed jobs / days worked'}
+        {
+          label:'Technicians',
+          value:rows.length.toLocaleString(),
+          sub:'Active in selected period'
+        },
+        {
+          label:state.grain === 'month' ? 'Selected Month Revenue' : 'Selected Period Revenue',
+          value:fmtFull$(totalRev),
+          sub:completed.toLocaleString() + ' completed jobs'
+        },
+        {
+          label:'MTD Revenue',
+          value:mtd ? fmtFull$(mtd.current) : '–',
+          sub:mtd ? 'Through ' + new Date(mtd.latestDay+'T00:00:00').toLocaleDateString('en-US',{
+            month:'short',
+            day:'numeric'
+          }) : 'No daily data'
+        },
+        {
+          label:'MTD vs Prior',
+          value:mtd ? formatDeltaPct(mtd.deltaPct) : '–',
+          sub:mtd ? fmtFull$(mtd.prior) + ' prior MTD' : 'No prior data',
+          cls:mtd ? deltaClass(mtd.deltaPct) : ''
+        },
+        {
+          label:'Avg Ticket',
+          value:fmt$(avgTicket),
+          sub:'Revenue / invoiced jobs'
+        },
+        {
+          label:'Avg Jobs/Day',
+          value:fmtN(avgJpd,1),
+          sub:'Completed jobs / days worked'
+        },
+        {
+          label:'Avg Tech Efficiency',
+          value:fmtEff(avgTechEff),
+          sub:'Appt duration / actual duration'
+        }
       ];
 
       const html = cards.map(c => `
         <div class="card tight">
           <div class="section-label">${escapeHtml(c.label)}</div>
-          <div class="metric-value ${c.cls || ''}" style="${c.cls==='good'?'color:var(--green);':c.cls==='bad'?'color:var(--red);':''}">${escapeHtml(c.value)}</div>
+          <div
+            class="metric-value ${c.cls || ''}"
+            style="${c.cls==='good'?'color:var(--green);':c.cls==='bad'?'color:var(--red);':''}"
+          >
+            ${escapeHtml(c.value)}
+          </div>
           <div class="small-muted">${escapeHtml(c.sub)}</div>
         </div>
       `).join('');
@@ -677,20 +1250,53 @@
       el('revenueKpiGrid').innerHTML = html;
     }
 
-    function rankClass(rank){ return rank===1 ? 'top1' : rank===2 ? 'top2' : rank===3 ? 'top3' : ''; }
-    function rankLabel(rank){ return rank===1 ? '🥇' : rank===2 ? '🥈' : rank===3 ? '🥉' : '#' + rank; }
+    function rankClass(rank){
+      return rank===1 ? 'top1' : rank===2 ? 'top2' : rank===3 ? 'top3' : '';
+    }
+
+    function rankLabel(rank){
+      return rank===1 ? '🥇' : rank===2 ? '🥈' : rank===3 ? '🥉' : '#' + rank;
+    }
+
     function perfClassMetric(key, v){
       if(v == null) return '';
-      if(key === 'jobs_per_day') return v >= 3.5 ? 'good' : v <= 2 ? 'bad' : '';
-      if(key === 'aov_completion_rate') return v >= 0.9 ? 'good' : v >= 0.75 ? 'warn' : 'bad';
-      if(key === 'service_call_pct') return v <= 0.15 ? 'good' : v >= 0.30 ? 'bad' : 'warn';
+
+      if(key === 'jobs_per_day') {
+        return v >= 3.5 ? 'good' : v <= 2 ? 'bad' : '';
+      }
+
+      if(key === 'aov_completion_rate') {
+        const n = Number(v);
+        const decimal = Math.abs(n) <= 2 ? n : n / 100;
+        return decimal >= 0.9 ? 'good' : decimal >= 0.75 ? 'warn' : 'bad';
+      }
+
+      if(key === 'service_call_pct') {
+        return v <= 0.15 ? 'good' : v >= 0.30 ? 'bad' : 'warn';
+      }
+
+      if(key === 'tech_efficiency') {
+        return v >= 1.25 ? 'good' : v < 1 ? 'bad' : 'warn';
+      }
+
       return '';
     }
 
     function renderLeaderboard(rows){
       if(!rows.length){
-        el('leaderboard').innerHTML = `<div class="card"><div class="section-label">No Results</div><div class="small-muted">No technicians found for this selection.</div></div>`;
-        el('revenueRows').innerHTML = `<tr><td colspan="8">No technicians found for this selection.</td></tr>`;
+        el('leaderboard').innerHTML = `
+          <div class="card">
+            <div class="section-label">No Results</div>
+            <div class="small-muted">No technicians found for this selection.</div>
+          </div>
+        `;
+
+        el('revenueRows').innerHTML = `
+          <tr>
+            <td colspan="9">No technicians found for this selection.</td>
+          </tr>
+        `;
+
         return;
       }
 
@@ -704,11 +1310,13 @@
               </div>
               <div class="tech-market">${escapeHtml(r.market)}</div>
             </div>
+
             <div class="tech-rev">
               <div class="value">${fmt$(r.total_revenue)}</div>
               <div class="label">Revenue</div>
             </div>
           </div>
+
           <div class="mini-grid">
             ${[
               ['Avg Ticket', fmt$(r.avg_ticket), ''],
@@ -716,7 +1324,7 @@
               ['AOV Cmpl', r.aov_completion_rate == null ? '–' : fmtPct(r.aov_completion_rate), perfClassMetric('aov_completion_rate', r.aov_completion_rate)],
               ['Repairs/Job', r.repairs_per_job == null ? '–' : fmtN(r.repairs_per_job,1), ''],
               ['Service Call %', r.service_call_pct == null ? '–' : fmtPct(r.service_call_pct), perfClassMetric('service_call_pct', r.service_call_pct)],
-              ['Tech Efficiency', '', '']
+              ['Tech Efficiency', r.tech_efficiency == null ? '–' : fmtEff(r.tech_efficiency), perfClassMetric('tech_efficiency', r.tech_efficiency)]
             ].map(([label,value,cls]) => `
               <div class="mini-cell">
                 <div class="mini-label">${label}</div>
@@ -729,13 +1337,15 @@
 
       el('revenueRows').innerHTML = rows.map(r => `
         <tr>
-          <td><span class="rank-chip ${rankClass(r.rank)}">${rankLabel(r.rank)}</span></td>
+          <td>
+            <span class="rank-chip ${rankClass(r.rank)}">${rankLabel(r.rank)}</span>
+          </td>
           <td>${escapeHtml(r.name)}</td>
           <td>${escapeHtml(r.market)}</td>
           <td>${fmtFull$(r.total_revenue)}</td>
           <td>${fmtFull$(r.total_revenue)}</td>
           <td>${fmt$(r.avg_ticket)}</td>
-          <td>–</td>
+          <td>${r.tech_efficiency == null ? '–' : fmtEff(r.tech_efficiency)}</td>
           <td>${r.jobs_per_day == null ? '–' : fmtN(r.jobs_per_day,1)}</td>
           <td>${r.service_call_pct == null ? '–' : fmtPct(r.service_call_pct)}</td>
         </tr>
@@ -756,7 +1366,7 @@
         return;
       }
 
-      let baseRowsAll = getFilteredBaseRows('month', month);
+      const baseRowsAll = getFilteredBaseRows('month', month);
       const techOptions = [...new Set(baseRowsAll.map(r => r.name).filter(Boolean))].sort();
 
       if(state.coachingTech !== 'All Technicians' && !techOptions.includes(state.coachingTech)){
@@ -764,6 +1374,7 @@
       }
 
       let baseRows = [...baseRowsAll];
+
       if(state.coachingTech !== 'All Technicians'){
         baseRows = baseRows.filter(r => r.name === state.coachingTech);
       }
@@ -782,7 +1393,9 @@
             completed_jobs_w_invoice:0,
             total_repairs:0,
             service_call_count:0,
-            days_worked:0
+            days_worked:0,
+            total_appointment_duration_minutes:0,
+            total_normalized_actual_duration_minutes:0
           };
         }
 
@@ -793,13 +1406,23 @@
         byWeek[week].total_repairs += toNum(r.total_repairs);
         byWeek[week].service_call_count += toNum(r.service_call_count);
         byWeek[week].days_worked += toNum(r.days_worked);
+
+        const apptDuration = toNum(r.total_appointment_duration_minutes);
+        const actualDuration = toNum(r.total_normalized_actual_duration_minutes);
+
+        if(actualDuration > 0){
+          byWeek[week].total_appointment_duration_minutes += apptDuration;
+          byWeek[week].total_normalized_actual_duration_minutes += actualDuration;
+        }
       });
 
       const weeks = Object.values(byWeek)
         .sort((a,b) => String(a.week).localeCompare(String(b.week)))
         .map((w,i,arr) => {
           const prev = arr[i-1];
-          const delta = prev && prev.total_revenue ? (w.total_revenue - prev.total_revenue) / prev.total_revenue : null;
+          const delta = prev && prev.total_revenue
+            ? (w.total_revenue - prev.total_revenue) / prev.total_revenue
+            : null;
 
           return {
             ...w,
@@ -808,21 +1431,33 @@
             aov_completion_rate: w.booked_revenue ? w.total_revenue / w.booked_revenue : null,
             repairs_per_job: w.completed_jobs_w_invoice ? w.total_repairs / w.completed_jobs_w_invoice : null,
             service_call_pct: w.completed_jobs ? w.service_call_count / w.completed_jobs : null,
+            tech_efficiency: w.total_normalized_actual_duration_minutes
+              ? w.total_appointment_duration_minutes / w.total_normalized_actual_duration_minutes
+              : null,
             delta
           };
         });
 
       const mtd = getMtdRevenueComparison();
-      const selectedLabel = state.coachingTech === 'All Technicians' ? 'All Technicians' : state.coachingTech;
+      const selectedLabel = state.coachingTech === 'All Technicians'
+        ? 'All Technicians'
+        : state.coachingTech;
 
       panel.innerHTML = `
         <div class="card" style="margin-bottom:16px;">
           <div class="metric-row" style="align-items:flex-start;margin-bottom:14px;">
             <div>
               <div class="section-label">Week-by-Week Coaching View</div>
-              <div class="small-muted">Currently viewing: ${escapeHtml(selectedLabel)} · Use the filter below for 1:1 coaching conversations.</div>
+              <div class="small-muted">
+                Currently viewing: ${escapeHtml(selectedLabel)} · Use the filter below for 1:1 coaching conversations.
+              </div>
             </div>
-            ${mtd ? `<span class="delta-chip ${deltaClass(mtd.deltaPct)}">MTD vs Prior ${formatDeltaPct(mtd.deltaPct)}</span>` : ''}
+
+            ${mtd ? `
+              <span class="delta-chip ${deltaClass(mtd.deltaPct)}">
+                MTD vs Prior ${formatDeltaPct(mtd.deltaPct)}
+              </span>
+            ` : ''}
           </div>
 
           <div class="controls" style="margin-bottom:14px;">
@@ -848,13 +1483,16 @@
                   <th>Service Call %</th>
                 </tr>
               </thead>
+
               <tbody>
                 ${weeks.length ? weeks.map(w => `
                   <tr>
                     <td>${formatWeekLabel(w.week)}</td>
                     <td>${fmtFull$(w.total_revenue)}</td>
-                    <td><span class="delta-chip ${deltaClass(w.delta)}">${formatDeltaPct(w.delta)}</span></td>
-                    <td>${w.completed_jobs}</td>
+                    <td>
+                      <span class="delta-chip ${deltaClass(w.delta)}">${formatDeltaPct(w.delta)}</span>
+                    </td>
+                    <td>${w.tech_efficiency == null ? '–' : fmtEff(w.tech_efficiency)}</td>
                     <td>${w.avg_ticket == null ? '–' : fmt$(w.avg_ticket)}</td>
                     <td>${w.jobs_per_day == null ? '–' : fmtN(w.jobs_per_day,1)}</td>
                     <td>${w.aov_completion_rate == null ? '–' : fmtPct(w.aov_completion_rate)}</td>
@@ -873,6 +1511,7 @@
       `;
 
       const coachingSelect = el('coachingTechSelect');
+
       if(coachingSelect){
         coachingSelect.addEventListener('change', e => {
           state.coachingTech = e.target.value;
@@ -882,28 +1521,59 @@
     }
 
     function bindEvents(){
-      document.querySelectorAll('.period-btn').forEach(btn => btn.addEventListener('click', () => {
-        state.grain = btn.dataset.grain;
-        state.period = '';
+      document.querySelectorAll('.period-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.grain = btn.dataset.grain;
+          state.period = '';
+          render();
+        });
+      });
+
+      el('periodSelect').addEventListener('change', e => {
+        state.period = e.target.value;
         render();
-      }));
-      el('periodSelect').addEventListener('change', e => { state.period = e.target.value; render(); });
-      el('marketSelect').addEventListener('change', e => { state.market = e.target.value; render(); });
-      el('searchInput').addEventListener('input', e => { state.search = e.target.value.trim().toLowerCase(); render(); });
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => { state.tab = btn.dataset.tab; render(); }));
+      });
+
+      el('marketSelect').addEventListener('change', e => {
+        state.market = e.target.value;
+        render();
+      });
+
+      el('searchInput').addEventListener('input', e => {
+        state.search = e.target.value.trim().toLowerCase();
+        render();
+      });
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.tab = btn.dataset.tab;
+          render();
+        });
+      });
+
       el('sortToolbar').addEventListener('click', e => {
         const btn = e.target.closest('[data-sort]');
+
         if(!btn) return;
+
         const key = btn.dataset.sort;
-        if(state.sortKey === key) state.sortDir = state.sortDir === 'desc' ? 'asc' : 'desc';
-        else { state.sortKey = key; state.sortDir = 'desc'; }
+
+        if(state.sortKey === key) {
+          state.sortDir = state.sortDir === 'desc' ? 'asc' : 'desc';
+        } else {
+          state.sortKey = key;
+          state.sortDir = 'desc';
+        }
+
         render();
       });
     }
 
     function render(){
       renderControls();
+
       const rows = rankedRows();
+
       renderHeader(rows);
       renderKpis(rows);
       renderLeaderboard(rows);
@@ -912,6 +1582,7 @@
 
     async function init(){
       bindEvents();
+
       try {
         state.rawData = await loadData();
         state.fallback = false;
@@ -920,13 +1591,16 @@
         state.rawData = FALLBACK;
         state.fallback = true;
       }
+
       el('loading').classList.add('hidden');
       el('app').classList.remove('hidden');
+
       render();
     }
 
     window.addEventListener('error', function(event){
       console.error('Global dashboard error:', event.error || event.message);
+
       el('loading')?.classList.add('hidden');
       el('app')?.classList.remove('hidden');
     });
