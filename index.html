@@ -706,7 +706,7 @@
         service_call_count:0,
         completed_jobs:4,
         days_worked:1,
-        tech_efficiency:0.6291666667,
+        tech_efficiency:1.589403974,
         total_appointment_duration_minutes:240,
         total_billed_invoiced_minutes:240,
         total_normalized_actual_duration_minutes:151
@@ -729,7 +729,7 @@
         service_call_count:1,
         completed_jobs:6,
         days_worked:1,
-        tech_efficiency:0.4861111111,
+        tech_efficiency:2.057142857,
         total_appointment_duration_minutes:360,
         total_billed_invoiced_minutes:360,
         total_normalized_actual_duration_minutes:175
@@ -752,7 +752,7 @@
         service_call_count:0,
         completed_jobs:5,
         days_worked:1,
-        tech_efficiency:0.3266666667,
+        tech_efficiency:3.06122449,
         total_appointment_duration_minutes:300,
         total_billed_invoiced_minutes:300,
         total_normalized_actual_duration_minutes:98
@@ -775,7 +775,7 @@
         service_call_count:0,
         completed_jobs:5,
         days_worked:1,
-        tech_efficiency:0.74,
+        tech_efficiency:1.351351351,
         total_appointment_duration_minutes:300,
         total_billed_invoiced_minutes:300,
         total_normalized_actual_duration_minutes:222
@@ -798,7 +798,7 @@
         service_call_count:0,
         completed_jobs:4,
         days_worked:1,
-        tech_efficiency:1.216666667,
+        tech_efficiency:0.8219178082,
         total_appointment_duration_minutes:240,
         total_billed_invoiced_minutes:240,
         total_normalized_actual_duration_minutes:292
@@ -821,7 +821,7 @@
         service_call_count:0,
         completed_jobs:5,
         days_worked:1,
-        tech_efficiency:0.6066666667,
+        tech_efficiency:1.648351648,
         total_appointment_duration_minutes:300,
         total_billed_invoiced_minutes:300,
         total_normalized_actual_duration_minutes:182
@@ -1058,9 +1058,10 @@
         const actualDuration = toNum(r.total_normalized_actual_duration_minutes);
 
         // Important:
-        // Only include efficiency rows where both sides of the ratio exist.
-        // This prevents distorted Tech Efficiency when either duration is missing.
-        if(billedInvoicedMinutes > 0 && actualDuration > 0){
+        // Only include efficiency rows where actual duration exists.
+        // This prevents inflated Tech Efficiency when billed minutes exist
+        // but closed/actual duration is missing.
+        if(actualDuration > 0){
           map[k].total_billed_invoiced_minutes += billedInvoicedMinutes;
           map[k].total_normalized_actual_duration_minutes += actualDuration;
         }
@@ -1073,8 +1074,8 @@
         aov_completion_rate: r.booked_revenue ? r.total_revenue / r.booked_revenue : null,
         repairs_per_job: r.completed_jobs_w_invoice ? r.total_repairs / r.completed_jobs_w_invoice : null,
         service_call_pct: r.completed_jobs ? r.service_call_count / r.completed_jobs : null,
-        tech_efficiency: r.total_billed_invoiced_minutes
-          ? r.total_normalized_actual_duration_minutes / r.total_billed_invoiced_minutes
+        tech_efficiency: r.total_normalized_actual_duration_minutes
+          ? r.total_billed_invoiced_minutes / r.total_normalized_actual_duration_minutes
           : null
       })).filter(r => r.completed_jobs > 0 || r.days_worked > 0 || r.total_revenue > 0);
     }
@@ -1192,7 +1193,7 @@
 
       const totalBilledInvoicedMinutes = rows.reduce((s,r)=>s+toNum(r.total_billed_invoiced_minutes),0);
       const totalActualDuration = rows.reduce((s,r)=>s+toNum(r.total_normalized_actual_duration_minutes),0);
-      const avgTechEff = totalBilledInvoicedMinutes ? totalActualDuration / totalBilledInvoicedMinutes : null;
+      const avgTechEff = totalActualDuration ? totalBilledInvoicedMinutes / totalActualDuration : null;
 
       const mtd = getMtdRevenueComparison();
 
@@ -1234,7 +1235,7 @@
         {
           label:'Avg Tech Efficiency',
           value:fmtEff(avgTechEff),
-          sub:'Normalized actual / billed invoiced minutes'
+          sub:'Billed invoiced / normalized actual minutes'
         }
       ];
 
@@ -1415,7 +1416,7 @@
         const billedInvoicedMinutes = toNum(r.total_billed_invoiced_minutes);
         const actualDuration = toNum(r.total_normalized_actual_duration_minutes);
 
-        if(billedInvoicedMinutes > 0 && actualDuration > 0){
+        if(actualDuration > 0){
           byWeek[week].total_billed_invoiced_minutes += billedInvoicedMinutes;
           byWeek[week].total_normalized_actual_duration_minutes += actualDuration;
         }
@@ -1436,8 +1437,8 @@
             aov_completion_rate: w.booked_revenue ? w.total_revenue / w.booked_revenue : null,
             repairs_per_job: w.completed_jobs_w_invoice ? w.total_repairs / w.completed_jobs_w_invoice : null,
             service_call_pct: w.completed_jobs ? w.service_call_count / w.completed_jobs : null,
-            tech_efficiency: w.total_billed_invoiced_minutes
-              ? w.total_normalized_actual_duration_minutes / w.total_billed_invoiced_minutes
+            tech_efficiency: w.total_normalized_actual_duration_minutes
+              ? w.total_billed_invoiced_minutes / w.total_normalized_actual_duration_minutes
               : null,
             delta
           };
