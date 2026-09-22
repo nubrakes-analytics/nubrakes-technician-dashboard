@@ -672,7 +672,7 @@
   </div>
 
   <script>
-    const DATA_URL = "https://raw.githubusercontent.com/nubrakes-analytics/NuBrakes-Copilot/main/data/fact_nubrakes_technician_daily.json";
+    const DATA_URL = "https://nubrakes-analytics.github.io/NuBrakes-Copilot/data/fact_technician_operations_daily.json";
 
     const state = {
       rawData: [],
@@ -841,6 +841,26 @@
       return Number.isFinite(n) ? n : 0;
     }
 
+    function normalizeRows(rows){
+      return rows.map(r => ({
+        ...r,
+        market: r.market ?? r.market_name,
+        name: r.name ?? r.technician_name,
+        isactive: r.isactive ?? true,
+        total_revenue: r.total_revenue ?? r.revenue_amount,
+        booked_revenue: r.booked_revenue ?? r.booked_revenue_amount,
+        total_repairs: r.total_repairs ?? r.repairs_count,
+        completed_jobs_w_invoice: r.completed_jobs_w_invoice ?? r.invoiced_jobs_count,
+        service_call_count: r.service_call_count ?? r.service_call_jobs_count,
+        completed_jobs: r.completed_jobs ?? r.completed_jobs_count,
+        days_worked: r.days_worked ?? r.worked_day_flag,
+        total_billed_invoiced_minutes:
+          r.total_billed_invoiced_minutes ?? r.invoiced_minutes,
+        total_normalized_actual_duration_minutes:
+          r.total_normalized_actual_duration_minutes ?? r.normalized_actual_duration_minutes
+      })).filter(r => r.name && r.market && r.day);
+    }
+
     function escapeHtml(str){
       return String(str ?? "").replace(/[&<>"']/g, s => ({
         '&':'&amp;',
@@ -933,7 +953,11 @@
 
       if(!Array.isArray(d) || !d.length) throw new Error("empty");
 
-      return d;
+      const rows = normalizeRows(d);
+
+      if(!rows.length) throw new Error("unrecognized schema");
+
+      return rows;
     }
 
     function getPeriodOptions(){
