@@ -629,8 +629,8 @@
             <button class="metric-pill active" data-sort="total_revenue">Revenue ↓</button>
             <button class="metric-pill" data-sort="avg_ticket">Avg Ticket</button>
             <button class="metric-pill" data-sort="jobs_per_day">Jobs/Day</button>
-            <button class="metric-pill" data-sort="repairs_per_job">Repairs/Job</button>
-            <button class="metric-pill" data-sort="aov_completion_rate">AOV Cmpl</button>
+            <button class="metric-pill" data-sort="rotor_attach_rate">Rotor Attach</button>
+            <button class="metric-pill" data-sort="aov_completion_rate">Ticket Cmpl</button>
             <button class="metric-pill" data-sort="tech_efficiency">Tech Eff</button>
           </div>
         </div>
@@ -673,9 +673,14 @@
 
   <script>
     const DATA_URL = "https://nubrakes-analytics.github.io/NuBrakes-Copilot/data/fact_technician_operations_daily.json";
+    const DATA_FALLBACK_URL = "https://raw.githubusercontent.com/nubrakes-analytics/NuBrakes-Copilot/main/data/fact_technician_operations_daily.json";
+    const LABOR_URL = "https://nubrakes-analytics.github.io/NuBrakes-Copilot/data/fact_technician_labor_weekly.json";
+    const LABOR_FALLBACK_URL = "https://raw.githubusercontent.com/nubrakes-analytics/NuBrakes-Copilot/main/data/fact_technician_labor_weekly.json";
 
     const state = {
       rawData: [],
+      laborData: [],
+      allocIndex: new Map(),
       fallback: false,
       grain: "month",
       period: "",
@@ -841,9 +846,17 @@
       return Number.isFinite(n) ? n : 0;
     }
 
+    function clockHours(l){
+      return ('Regular' in l || 'Overtime' in l)
+        ? toNum(l.Regular) + toNum(l.Overtime)
+        : toNum(l.Hours);
+    }
+
     function normalizeRows(rows){
-      return rows.map(r => ({
+      return rows.map((r,i) => ({
         ...r,
+        _key: i,
+        technician_id: r.technician_id ?? r.technicianId ?? r.name ?? r.technician_name,
         market: r.market ?? r.market_name,
         name: r.name ?? r.technician_name,
         isactive: r.isactive ?? true,
@@ -854,11 +867,84 @@
         service_call_count: r.service_call_count ?? r.service_call_jobs_count,
         completed_jobs: r.completed_jobs ?? r.completed_jobs_count,
         days_worked: r.days_worked ?? r.worked_day_flag,
+        rotor_eligible_jobs: r.rotor_eligible_jobs ?? r.rotor_eligible_jobs_count,
+        rotor_attached_jobs: r.rotor_attached_jobs ?? r.rotor_attached_jobs_count,
         total_billed_invoiced_minutes:
           r.total_billed_invoiced_minutes ?? r.invoiced_minutes,
         total_normalized_actual_duration_minutes:
           r.total_normalized_actual_duration_minutes ?? r.normalized_actual_duration_minutes
       })).filter(r => r.name && r.market && r.day);
+    }
+
+    function normalizeLabor(rows){
+      return rows.map(r => ({
+        ...r,
+        technician_id: r.technician_id ?? r.technicianId ?? r.name ?? r.technician_name,
+        week: r.week ?? r.week_start ?? r.week_start_date
+      })).filter(r => r.technician_id && r.week);
+    }
+
+    function allocateLabor(){
+      const byTechWeek = new Map();
+
+      state.rawData.forEach(r => {
+        const k = `${r.technician_id}|${normDate(r.week)}`;
+        if(!byTechWeek.has(k)) byTechWeek.set(k, []);
+        byTechWeek.get(k).push(r);
+      });
+
+      state.allocIndex = new Map();
+
+      state.laborData.forEach(l => {
+        const hours = clockHours(l);
+        if(hours <= 0) return;
+
+        const rows = byTechWeek.get(`${l.technician_id}|${normDate(l.week)}`) || [];
+        const worked = rows.filter(r => toNum(r.days_worked) > 0);
+        const pool = worked.length ? worked : rows;
+
+        if(!pool.length) return;
+
+        const hoursPerDay = hours / pool.length;
+
+        pool.forEach(r => {
+          const existing = state.allocIndex.get(r._key);
+          state.allocIndex.set(r._key, {
+            hours: toNum(existing?.hours) + hoursPerDay
+          });
+        });
+      });
+    }
+
+    function efficiencyParts(rows){
+      if(state.laborData.length && state.allocIndex.size){
+        let clockedHours = 0;
+        let coveredInvoicedMinutes = 0;
+        let coveredDays = 0;
+
+        rows.forEach(r => {
+          const alloc = state.allocIndex.get(r._key);
+          if(!alloc) return;
+
+          clockedHours += toNum(alloc.hours);
+          coveredInvoicedMinutes += toNum(r.total_billed_invoiced_minutes);
+          coveredDays += toNum(r.days_worked);
+        });
+
+        return {
+          clockedHours,
+          coveredInvoicedMinutes,
+          coveredDays,
+          tech_efficiency: clockedHours > 0 ? (coveredInvoicedMinutes / 60) / clockedHours : null
+        };
+      }
+
+      return {
+        clockedHours: null,
+        coveredInvoicedMinutes: null,
+        coveredDays: 0,
+        tech_efficiency: null
+      };
     }
 
     function escapeHtml(str){
@@ -942,14 +1028,27 @@
       });
     }
 
-    async function loadData(){
-      const r = await fetch(DATA_URL + "?t=" + Date.now(), {
+    async function fetchJson(url){
+      const r = await fetch(url + "?t=" + Date.now(), {
         cache:"no-store"
       });
 
       if(!r.ok) throw new Error(r.status);
 
-      const d = await r.json();
+      return r.json();
+    }
+
+    async function fetchJsonWithFallback(primaryUrl, fallbackUrl){
+      try {
+        return await fetchJson(primaryUrl);
+      } catch(primaryError) {
+        console.warn('Primary data feed failed; trying fallback.', primaryError);
+        return fetchJson(fallbackUrl);
+      }
+    }
+
+    async function loadData(){
+      const d = await fetchJsonWithFallback(DATA_URL, DATA_FALLBACK_URL);
 
       if(!Array.isArray(d) || !d.length) throw new Error("empty");
 
@@ -958,6 +1057,12 @@
       if(!rows.length) throw new Error("unrecognized schema");
 
       return rows;
+    }
+
+    async function loadLaborData(){
+      const d = await fetchJsonWithFallback(LABOR_URL, LABOR_FALLBACK_URL);
+
+      return Array.isArray(d) ? normalizeLabor(d) : [];
     }
 
     function getPeriodOptions(){
@@ -983,8 +1088,8 @@
         total_revenue:'Revenue',
         avg_ticket:'Avg Ticket',
         jobs_per_day:'Jobs/Day',
-        repairs_per_job:'Repairs/Job',
-        aov_completion_rate:'AOV Cmpl',
+        rotor_attach_rate:'Rotor Attach',
+        aov_completion_rate:'Ticket Cmpl',
         tech_efficiency:'Tech Eff'
       }[k] || k;
     }
@@ -1052,7 +1157,7 @@
       getFilteredBaseRows().forEach(r => {
         const name = r.name || 'Unknown Technician';
         const market = r.market || 'Unknown Market';
-        const k = `${name}||${market}`;
+        const k = `${r.technician_id || name}||${market}`;
 
         if(!map[k]) {
           map[k] = {
@@ -1065,11 +1170,15 @@
             service_call_count:0,
             completed_jobs:0,
             days_worked:0,
+            rotor_eligible_jobs:0,
+            rotor_attached_jobs:0,
             total_billed_invoiced_minutes:0,
-            total_normalized_actual_duration_minutes:0
+            total_normalized_actual_duration_minutes:0,
+            _rows:[]
           };
         }
 
+        map[k]._rows.push(r);
         map[k].total_revenue += toNum(r.total_revenue);
         map[k].booked_revenue += toNum(r.booked_revenue);
         map[k].total_repairs += toNum(r.total_repairs);
@@ -1077,31 +1186,30 @@
         map[k].service_call_count += toNum(r.service_call_count);
         map[k].completed_jobs += toNum(r.completed_jobs);
         map[k].days_worked += toNum(r.days_worked);
+        map[k].rotor_eligible_jobs += toNum(r.rotor_eligible_jobs);
+        map[k].rotor_attached_jobs += toNum(r.rotor_attached_jobs);
 
-        const billedInvoicedMinutes = toNum(r.total_billed_invoiced_minutes);
-        const actualDuration = toNum(r.total_normalized_actual_duration_minutes);
-
-        // Important:
-        // Only include efficiency rows where actual duration exists.
-        // This prevents inflated Tech Efficiency when billed minutes exist
-        // but closed/actual duration is missing.
-        if(actualDuration > 0){
-          map[k].total_billed_invoiced_minutes += billedInvoicedMinutes;
-          map[k].total_normalized_actual_duration_minutes += actualDuration;
-        }
+        map[k].total_billed_invoiced_minutes += toNum(r.total_billed_invoiced_minutes);
+        map[k].total_normalized_actual_duration_minutes += toNum(r.total_normalized_actual_duration_minutes);
       });
 
-      return Object.values(map).map(r => ({
-        ...r,
-        avg_ticket: r.completed_jobs_w_invoice ? r.total_revenue / r.completed_jobs_w_invoice : null,
-        jobs_per_day: r.days_worked ? r.completed_jobs / r.days_worked : null,
-        aov_completion_rate: r.booked_revenue ? r.total_revenue / r.booked_revenue : null,
-        repairs_per_job: r.completed_jobs_w_invoice ? r.total_repairs / r.completed_jobs_w_invoice : null,
-        service_call_pct: r.completed_jobs ? r.service_call_count / r.completed_jobs : null,
-        tech_efficiency: r.total_normalized_actual_duration_minutes
-          ? r.total_billed_invoiced_minutes / r.total_normalized_actual_duration_minutes
-          : null
-      })).filter(r => r.completed_jobs > 0 || r.days_worked > 0 || r.total_revenue > 0);
+      return Object.values(map).map(r => {
+        const eff = efficiencyParts(r._rows);
+
+        return {
+          ...r,
+          _rows: undefined,
+          total_clocked_hours: eff.clockedHours,
+          payroll_covered_invoiced_minutes: eff.coveredInvoicedMinutes,
+          payroll_covered_days: eff.coveredDays,
+          avg_ticket: r.completed_jobs_w_invoice ? r.total_revenue / r.completed_jobs_w_invoice : null,
+          jobs_per_day: r.days_worked ? r.completed_jobs / r.days_worked : null,
+          aov_completion_rate: r.booked_revenue ? r.total_revenue / r.booked_revenue : null,
+          rotor_attach_rate: r.rotor_eligible_jobs ? r.rotor_attached_jobs / r.rotor_eligible_jobs : null,
+          service_call_pct: r.completed_jobs ? r.service_call_count / r.completed_jobs : null,
+          tech_efficiency: eff.tech_efficiency
+        };
+      }).filter(r => r.completed_jobs > 0 || r.days_worked > 0 || r.total_revenue > 0);
     }
 
     function rankedRows(){
@@ -1210,21 +1318,21 @@
       const totalRev = rows.reduce((s,r)=>s+toNum(r.total_revenue),0);
       const completed = rows.reduce((s,r)=>s+toNum(r.completed_jobs),0);
       const completedWithInvoice = rows.reduce((s,r)=>s+toNum(r.completed_jobs_w_invoice),0);
+      const workedDays = rows.reduce((s,r)=>s+toNum(r.days_worked),0);
 
-      const avgTicket = completedWithInvoice ? totalRev / completedWithInvoice : 0;
-      const avgJpd = avg(rows.map(r => r.jobs_per_day));
-      const avgAov = avg(rows.map(r => r.aov_completion_rate));
+      const avgTicket = completedWithInvoice ? totalRev / completedWithInvoice : null;
+      const avgJpd = workedDays ? completed / workedDays : null;
 
-      const totalBilledInvoicedMinutes = rows.reduce((s,r)=>s+toNum(r.total_billed_invoiced_minutes),0);
-      const totalActualDuration = rows.reduce((s,r)=>s+toNum(r.total_normalized_actual_duration_minutes),0);
-      const avgTechEff = totalActualDuration ? totalBilledInvoicedMinutes / totalActualDuration : null;
+      const totalBilledInvoicedMinutes = rows.reduce((s,r)=>s+toNum(r.payroll_covered_invoiced_minutes),0);
+      const totalClockedHours = rows.reduce((s,r)=>s+toNum(r.total_clocked_hours),0);
+      const avgTechEff = totalClockedHours ? (totalBilledInvoicedMinutes / 60) / totalClockedHours : null;
 
       const mtd = getMtdRevenueComparison();
 
       const cards = [
         {
           label:'Technicians',
-          value:rows.length.toLocaleString(),
+          value:rows.filter(r => toNum(r.days_worked) > 0).length.toLocaleString(),
           sub:'Active in selected period'
         },
         {
@@ -1259,7 +1367,7 @@
         {
           label:'Avg Tech Efficiency',
           value:fmtEff(avgTechEff),
-          sub:'Billed invoiced / normalized actual minutes'
+          sub:'Payroll-matched invoiced / clocked hours'
         }
       ];
 
@@ -1351,8 +1459,8 @@
             ${[
               ['Avg Ticket', fmt$(r.avg_ticket), ''],
               ['Jobs/Day', r.jobs_per_day == null ? '–' : fmtN(r.jobs_per_day,1), perfClassMetric('jobs_per_day', r.jobs_per_day)],
-              ['AOV Cmpl', r.aov_completion_rate == null ? '–' : fmtPct(r.aov_completion_rate), perfClassMetric('aov_completion_rate', r.aov_completion_rate)],
-              ['Repairs/Job', r.repairs_per_job == null ? '–' : fmtN(r.repairs_per_job,1), ''],
+              ['Ticket Cmpl', r.aov_completion_rate == null ? '–' : fmtPct(r.aov_completion_rate), perfClassMetric('aov_completion_rate', r.aov_completion_rate)],
+              ['Rotor Attach', r.rotor_attach_rate == null ? '–' : fmtPct(r.rotor_attach_rate), ''],
               ['Service Call %', r.service_call_pct == null ? '–' : fmtPct(r.service_call_pct), perfClassMetric('service_call_pct', r.service_call_pct)],
               ['Tech Efficiency', r.tech_efficiency == null ? '–' : fmtEff(r.tech_efficiency), perfClassMetric('tech_efficiency', r.tech_efficiency)]
             ].map(([label,value,cls]) => `
@@ -1424,11 +1532,15 @@
             total_repairs:0,
             service_call_count:0,
             days_worked:0,
+            rotor_eligible_jobs:0,
+            rotor_attached_jobs:0,
             total_billed_invoiced_minutes:0,
-            total_normalized_actual_duration_minutes:0
+            total_normalized_actual_duration_minutes:0,
+            _rows:[]
           };
         }
 
+        byWeek[week]._rows.push(r);
         byWeek[week].total_revenue += toNum(r.total_revenue);
         byWeek[week].booked_revenue += toNum(r.booked_revenue);
         byWeek[week].completed_jobs += toNum(r.completed_jobs);
@@ -1436,14 +1548,11 @@
         byWeek[week].total_repairs += toNum(r.total_repairs);
         byWeek[week].service_call_count += toNum(r.service_call_count);
         byWeek[week].days_worked += toNum(r.days_worked);
+        byWeek[week].rotor_eligible_jobs += toNum(r.rotor_eligible_jobs);
+        byWeek[week].rotor_attached_jobs += toNum(r.rotor_attached_jobs);
 
-        const billedInvoicedMinutes = toNum(r.total_billed_invoiced_minutes);
-        const actualDuration = toNum(r.total_normalized_actual_duration_minutes);
-
-        if(actualDuration > 0){
-          byWeek[week].total_billed_invoiced_minutes += billedInvoicedMinutes;
-          byWeek[week].total_normalized_actual_duration_minutes += actualDuration;
-        }
+        byWeek[week].total_billed_invoiced_minutes += toNum(r.total_billed_invoiced_minutes);
+        byWeek[week].total_normalized_actual_duration_minutes += toNum(r.total_normalized_actual_duration_minutes);
       });
 
       const weeks = Object.values(byWeek)
@@ -1454,16 +1563,20 @@
             ? (w.total_revenue - prev.total_revenue) / prev.total_revenue
             : null;
 
+          const eff = efficiencyParts(w._rows);
+
           return {
             ...w,
+            _rows: undefined,
+            total_clocked_hours: eff.clockedHours,
+            payroll_covered_invoiced_minutes: eff.coveredInvoicedMinutes,
+            payroll_covered_days: eff.coveredDays,
             avg_ticket: w.completed_jobs_w_invoice ? w.total_revenue / w.completed_jobs_w_invoice : null,
             jobs_per_day: w.days_worked ? w.completed_jobs / w.days_worked : null,
             aov_completion_rate: w.booked_revenue ? w.total_revenue / w.booked_revenue : null,
-            repairs_per_job: w.completed_jobs_w_invoice ? w.total_repairs / w.completed_jobs_w_invoice : null,
+            rotor_attach_rate: w.rotor_eligible_jobs ? w.rotor_attached_jobs / w.rotor_eligible_jobs : null,
             service_call_pct: w.completed_jobs ? w.service_call_count / w.completed_jobs : null,
-            tech_efficiency: w.total_normalized_actual_duration_minutes
-              ? w.total_billed_invoiced_minutes / w.total_normalized_actual_duration_minutes
-              : null,
+            tech_efficiency: eff.tech_efficiency,
             delta
           };
         });
@@ -1508,8 +1621,8 @@
                   <th>Tech Efficiency</th>
                   <th>Avg Ticket</th>
                   <th>Jobs/Day</th>
-                  <th>AOV Cmpl</th>
-                  <th>Repairs/Job</th>
+                  <th>Ticket Cmpl</th>
+                  <th>Rotor Attach</th>
                   <th>Service Call %</th>
                 </tr>
               </thead>
@@ -1526,7 +1639,7 @@
                     <td>${w.avg_ticket == null ? '–' : fmt$(w.avg_ticket)}</td>
                     <td>${w.jobs_per_day == null ? '–' : fmtN(w.jobs_per_day,1)}</td>
                     <td>${w.aov_completion_rate == null ? '–' : fmtPct(w.aov_completion_rate)}</td>
-                    <td>${w.repairs_per_job == null ? '–' : fmtN(w.repairs_per_job,1)}</td>
+                    <td>${w.rotor_attach_rate == null ? '–' : fmtPct(w.rotor_attach_rate)}</td>
                     <td>${w.service_call_pct == null ? '–' : fmtPct(w.service_call_pct)}</td>
                   </tr>
                 `).join('') : `
@@ -1615,10 +1728,19 @@
 
       try {
         state.rawData = await loadData();
+        try {
+          state.laborData = await loadLaborData();
+        } catch(laborErr) {
+          console.warn('Technician labor data load failed. Efficiency will remain unavailable.', laborErr);
+          state.laborData = [];
+        }
+        allocateLabor();
         state.fallback = false;
       } catch(err){
         console.error('Technician data load failed. Using fallback sample data.', err);
         state.rawData = FALLBACK;
+        state.laborData = [];
+        allocateLabor();
         state.fallback = true;
       }
 
